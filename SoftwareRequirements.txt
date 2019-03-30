@@ -1,0 +1,11 @@
+- The Software shall store a meal to ingredience dictionary 'meal_to_ingredience' in a separate file
+- The 'meal_to_ingredience' list shall contain 'list_of_grogeries', 'kcal', 'carb', 'fat', 'protein' and 'number_of_portions' for each meal
+- The 'meal_to_ingredience' list shall contain the required Kcal per day.
+- The Software shall generate a grogery list for given '--days' using a meal to ingredience dictionary
+- The generation shall filter meals with more than 50g of Carbs per meal if the mandatory '--lowcarb' option is set
+
+
+
+Ideen:
+- Essensplan für die ganze Woche erstellen
+- 
