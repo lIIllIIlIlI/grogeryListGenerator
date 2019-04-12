@@ -1,6 +1,8 @@
-- The Software shall store a meal to ingredience dictionary 'meal_to_ingredience' in a yaml file.
+- The Software shall store a user configured 'meal_to_ingredience' dictionary in a yaml file.
 
 - The 'meal_to_ingredience' dictionary shall store 'grogerieItems', 'watchItems', 'default', 'kcal', 'carb', 'fat', 'protein', 'numberPortions', 'postWorkout' and 'preWorkout' for each meal.
+
+- The Software shall check consistency ot the 'meal_to_ingredience' yaml file
 
 - The item 'grogerieItems' of 'meal_to_ingredience' dictionary shall store a list of maps between grogeries and number of grams required for the meal
 
@@ -22,11 +24,15 @@
 
 - The item 'preWorkout' of 'meal_to_ingredience' dictionary shall be a boolean to indicate a pre workout meal
 
-- The Software shall implement a meal class.
+- The Software shall be implemented using classes.
 
-- The Software shall generate a grogery list for given '--days' using the 'meal_to_ingredience' dictionary and generate a list of meals.
+- The Software shall use a logger.
 
-- The Software shall generate a watch list which joins the watch list items of each choosen meal. 
+- The Software shall generate a 'shopping_list' yaml file which contains a list of grocerys, their number, a 'groceryList' and a 'watchList' for those meals.
+
+- The 'groceryList' contains all chosen meals.
+
+- The 'watchList' joins the watch list items of each choosen meal. 
 
 - The Software shall ignore meals with more than 30g of Carbs if the mandatory '--lowcarb' option is set.
 
@@ -36,6 +42,8 @@
 
 - The Software shall include a <number> of meals marked as 'preWorkout' and 'postWorkout' when the mandatory option '--exercises <number>' is set.
 
+- 
+
 
 Gedanken:
 - Es gibt Gerichte die ich nicht ständig hintereinander essen will (Hack, steak und anschließend rouladen), soll die Software darauf achten ein gute mischung aus Hähnchen/rind/fisch und vegetarisch zu generieren?
@@ -44,9 +52,6 @@ Gedanken:
 - Wie soll die Software mit Cheatmeals umgehen? Diese Gerichte sollen zwar nicht im standart stehen, aber trotzdem ab und zu gekauft werden.
 - Es gibt Gerichte, die sich sehr ähnlich sind. Ich möchte nicht Montag/Dienstag einen Hähnchensalat essen um Mittwoch/Donnerstag einen Thunfisch salat zu essen. Zudem möchte ich nicht 20 unterschiedliche Salatvariationen einzeln aufschreiben. Es braucht eine Option "pick one of four"
 - Es soll nicht immer wieder das gleiche generiert werden, deshalb muss sich die Software entweder merken was die beim letzten mal generiert hat, oder es muss einen random algorithmus geben.
-
-- random generator für salat
-
-- 
+- Es sollte möglichst jeden Tag auch warme Gerichte dabei sein
 
 
