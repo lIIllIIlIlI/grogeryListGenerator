@@ -42,12 +42,13 @@
 
 - The Software shall include a <number> of meals marked as 'preWorkout' and 'postWorkout' when the mandatory option '--exercises <number>' is set.
 
+- The 'groceryList' shall contain each meal which is not tagged as 'preWorkout' or 'postWorkout' only once.
+
 - 
 
 
 Gedanken:
 - Es gibt Gerichte die ich nicht ständig hintereinander essen will (Hack, steak und anschließend rouladen), soll die Software darauf achten ein gute mischung aus Hähnchen/rind/fisch und vegetarisch zu generieren?
-- Dürfen Mahlzeiten mehrfach vorkommen? Pre/Postworkout jedenfalls schon.
 - Manche Mahlzeiten sind nur für bestimmte Zwecke sinnvoll, zb Tomate/Mozarellasalat wäre ein typisches Abendessen. 
 - Wie soll die Software mit Cheatmeals umgehen? Diese Gerichte sollen zwar nicht im standart stehen, aber trotzdem ab und zu gekauft werden.
 - Es gibt Gerichte, die sich sehr ähnlich sind. Ich möchte nicht Montag/Dienstag einen Hähnchensalat essen um Mittwoch/Donnerstag einen Thunfisch salat zu essen. Zudem möchte ich nicht 20 unterschiedliche Salatvariationen einzeln aufschreiben. Es braucht eine Option "pick one of four"
