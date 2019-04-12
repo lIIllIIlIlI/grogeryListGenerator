@@ -1,22 +1,30 @@
 - The Software shall store a user configured 'meal_to_ingredience' dictionary in a yaml file.
 
-- The 'meal_to_ingredience' dictionary shall store 'grogerieItems', 'watchItems', 'default', 'kcal', 'carb', 'fat', 'protein', 'numberPortions', 'postWorkout' and 'preWorkout' for each meal.
+- The Software shall store a user configured 'ingredience_to_macros' dictionary in a yaml file.
 
-- The Software shall check consistency ot the 'meal_to_ingredience' yaml file
+- The 'meal_to_ingredience' dictionary shall store a 'grocerieMap', 'default', 'watchItems', 'numberPortions', 'postWorkout' and 'preWorkout' for each meal.
 
-- The item 'grogerieItems' of 'meal_to_ingredience' dictionary shall store a list of maps between grogeries and number of grams required for the meal
+- The 'ingredience_to_macros' yaml shall contain a map between each meal and 'kcal', 'carb', 'fat' and 'protein'.
+
+- The Software shall check consistency ot the 'meal_to_ingredience' and 'ingredience_to_macros' yaml file
+
+- Each grocery in 'grocerieMap' shall store either a grocery or list of groceries
+
+- The Software shall pick one item for each list of groceries in 'grocerieMap' randomly
+
+- The list 'grocerieItems' of 'meal_to_ingredience' dictionary shall store a list of maps between grogeries and number of grams required for the meal
 
 - The item 'watchItems' of 'meal_to_ingredience' dictionary shall store a list of spices and sauces that are required to prepare the meal  
 
 - The item 'default' of 'meal_to_ingredience' dictionary shall enforce the meal if 'numberPortions' is equal or less than given '--days'  
 
-- The item 'kcal' of 'meal_to_ingrdience' dictionary shall indicate the kcal count of each portion the meal
+- The item 'kcal' of 'ingredience_to_macros' dictionary shall indicate the kcal count of each portion the meal
 
-- The item 'carb' of 'meal_to_ingredience' dictionary shall be an integer indicating the carberhydrate count of each portion of the meal
+- The item 'carb' of 'ingredience_to_macros' dictionary shall be an integer indicating the carberhydrate count of each portion of the meal
 
-- The item 'fat' of 'meal_to_ingredience' dictionary shall be an integer indicating the fat count of each portion of the meal
+- The item 'fat' of 'ingredience_to_macros' dictionary shall be an integer indicating the fat count of each portion of the meal
 
-- The item 'protein' of 'meal_to_ingredience' dictionary shall be an integer indicating the protein count of each portion of the meal
+- The item 'protein' of 'ingredience_to_macros' dictionary shall be an integer indicating the protein count of each portion of the meal
 
 - The item 'numberPortions' of 'meal_to_ingredience' dictionary shall be an integer indicating the number of portions the meal generates
 
@@ -44,15 +52,10 @@
 
 - The 'groceryList' shall contain each meal which is not tagged as 'preWorkout' or 'postWorkout' only once.
 
-- 
+- When the parameter '--cheatmeals <number>' is set, the software shall reduce the overall required kcal by <number> times 850
+
+- The Software shall decide between matching meals by the use of an random algorithm
 
 
-Gedanken:
-- Es gibt Gerichte die ich nicht ständig hintereinander essen will (Hack, steak und anschließend rouladen), soll die Software darauf achten ein gute mischung aus Hähnchen/rind/fisch und vegetarisch zu generieren?
-- Manche Mahlzeiten sind nur für bestimmte Zwecke sinnvoll, zb Tomate/Mozarellasalat wäre ein typisches Abendessen. 
-- Wie soll die Software mit Cheatmeals umgehen? Diese Gerichte sollen zwar nicht im standart stehen, aber trotzdem ab und zu gekauft werden.
-- Es gibt Gerichte, die sich sehr ähnlich sind. Ich möchte nicht Montag/Dienstag einen Hähnchensalat essen um Mittwoch/Donnerstag einen Thunfisch salat zu essen. Zudem möchte ich nicht 20 unterschiedliche Salatvariationen einzeln aufschreiben. Es braucht eine Option "pick one of four"
-- Es soll nicht immer wieder das gleiche generiert werden, deshalb muss sich die Software entweder merken was die beim letzten mal generiert hat, oder es muss einen random algorithmus geben.
-- Es sollte möglichst jeden Tag auch warme Gerichte dabei sein
 
 
