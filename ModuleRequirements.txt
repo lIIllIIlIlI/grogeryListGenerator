@@ -1,0 +1,19 @@
+- The Software shall store a meal to ingredience dictionary 'meal_to_ingredience' in a yaml file
+
+- The 'meal_to_ingredience' dictionary shall store 'list_of_grogeries', 'kcal', 'carb', 'fat', 'protein', 'number_of_portions', 'postWorkout' and 'preWorkout' for each meal
+
+- The item 'list_of_grogeries' of 'meal_to_ingredience' dictionary shall  
+
+- The software shall implement a meal class
+
+- The Software shall generate a grogery list for given '--days' using the 'meal_to_ingredience' dictionary
+
+- The Software shall filter meals with more than 30g of Carbs if the mandatory '--lowcarb' option is set
+
+- The Software shall generate grogery lists that fit the kcal need of the user which is specified by the mandatory '--kcal'   option and defaults to 3500
+
+- The Software shall take '--exercise' 
+
+- The Software shall store 
+
+
