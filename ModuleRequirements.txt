@@ -1,19 +1,52 @@
-- The Software shall store a meal to ingredience dictionary 'meal_to_ingredience' in a yaml file
+- The Software shall store a meal to ingredience dictionary 'meal_to_ingredience' in a yaml file.
 
-- The 'meal_to_ingredience' dictionary shall store 'list_of_grogeries', 'kcal', 'carb', 'fat', 'protein', 'number_of_portions', 'postWorkout' and 'preWorkout' for each meal
+- The 'meal_to_ingredience' dictionary shall store 'grogerieItems', 'watchItems', 'default', 'kcal', 'carb', 'fat', 'protein', 'numberPortions', 'postWorkout' and 'preWorkout' for each meal.
 
-- The item 'list_of_grogeries' of 'meal_to_ingredience' dictionary shall  
+- The item 'grogerieItems' of 'meal_to_ingredience' dictionary shall store a list of maps between grogeries and number of grams required for the meal
 
-- The software shall implement a meal class
+- The item 'watchItems' of 'meal_to_ingredience' dictionary shall store a list of spices and sauces that are required to prepare the meal  
 
-- The Software shall generate a grogery list for given '--days' using the 'meal_to_ingredience' dictionary
+- The item 'default' of 'meal_to_ingredience' dictionary shall enforce the meal if 'numberPortions' is equal or less than given '--days'  
 
-- The Software shall filter meals with more than 30g of Carbs if the mandatory '--lowcarb' option is set
+- The item 'kcal' of 'meal_to_ingrdience' dictionary shall indicate the kcal count of each portion the meal
 
-- The Software shall generate grogery lists that fit the kcal need of the user which is specified by the mandatory '--kcal'   option and defaults to 3500
+- The item 'carb' of 'meal_to_ingredience' dictionary shall be an integer indicating the carberhydrate count of each portion of the meal
 
-- The Software shall take '--exercise' 
+- The item 'fat' of 'meal_to_ingredience' dictionary shall be an integer indicating the fat count of each portion of the meal
 
-- The Software shall store 
+- The item 'protein' of 'meal_to_ingredience' dictionary shall be an integer indicating the protein count of each portion of the meal
+
+- The item 'numberPortions' of 'meal_to_ingredience' dictionary shall be an integer indicating the number of portions the meal generates
+
+- The item 'postWorkout' of 'meal_to_ingredience' dictionary shall be a boolean to indicate a post workout meal
+
+- The item 'preWorkout' of 'meal_to_ingredience' dictionary shall be a boolean to indicate a pre workout meal
+
+- The Software shall implement a meal class.
+
+- The Software shall generate a grogery list for given '--days' using the 'meal_to_ingredience' dictionary and generate a list of meals.
+
+- The Software shall generate a watch list which joins the watch list items of each choosen meal. 
+
+- The Software shall ignore meals with more than 30g of Carbs if the mandatory '--lowcarb' option is set.
+
+- The Software shall ignore meals with more than 12g of Carbs if the mandatory '--nocarb' option is set.
+
+- The Software shall generate grogery lists that fit the kcal need of the user which is specified by the mandatory '--kcal'   option and defaults to 3500. The kcal need for days with exercise shall be increased by 700.
+
+- The Software shall include a <number> of meals marked as 'preWorkout' and 'postWorkout' when the mandatory option '--exercises <number>' is set.
+
+
+Gedanken:
+- Es gibt Gerichte die ich nicht ständig hintereinander essen will (Hack, steak und anschließend rouladen), soll die Software darauf achten ein gute mischung aus Hähnchen/rind/fisch und vegetarisch zu generieren?
+- Dürfen Mahlzeiten mehrfach vorkommen? Pre/Postworkout jedenfalls schon.
+- Manche Mahlzeiten sind nur für bestimmte Zwecke sinnvoll, zb Tomate/Mozarellasalat wäre ein typisches Abendessen. 
+- Wie soll die Software mit Cheatmeals umgehen? Diese Gerichte sollen zwar nicht im standart stehen, aber trotzdem ab und zu gekauft werden.
+- Es gibt Gerichte, die sich sehr ähnlich sind. Ich möchte nicht Montag/Dienstag einen Hähnchensalat essen um Mittwoch/Donnerstag einen Thunfisch salat zu essen. Zudem möchte ich nicht 20 unterschiedliche Salatvariationen einzeln aufschreiben. Es braucht eine Option "pick one of four"
+- Es soll nicht immer wieder das gleiche generiert werden, deshalb muss sich die Software entweder merken was die beim letzten mal generiert hat, oder es muss einen random algorithmus geben.
+
+- random generator für salat
+
+- 
 
 
