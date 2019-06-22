@@ -1,0 +1,15 @@
+- name: Frittn
+  incredience:
+    Bratfett: 20
+    Thymian: 2
+    kartoffeln: 400
+- name: Frittn2
+  incredience:
+    Bratfett: 20
+    # Put in differnt options like this
+    Option:
+    - krauter: 40
+    - Butter: 20
+      Lauch: 10
+    Thymian: 2
+    kartoffeln: 400
