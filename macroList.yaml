@@ -1,10 +1,10 @@
-- name: Tomate
+exampleIngredience1:
   Carbs: 10
   Fat: 0
   Protein: 2
   kcal: 100
   
-- name: Mozarella
+exampleIngredience2:
   Carbs: 10
   Fat: 0
   Protein: 2
