@@ -16,6 +16,7 @@
 ###################################################################################################
 #                                Imports                                                          #
 ###################################################################################################
+
 import logging
 import sys
 import yaml
@@ -23,12 +24,14 @@ import yaml
 from argparse import ArgumentParser
 from pathlib import Path
 from enum import Enum
+from random import choice
 
 from helperFunctions import setLogger
 from helperFunctions import getPrettyLogger
 from helperFunctions import LOGMODUS
 from helperFunctions import FILELOGGING
 from helperFunctions import resolveDoubleEntries
+
 
 ###################################################################################################
 #                                Input Arguments                                                  #
@@ -71,12 +74,12 @@ else:
     logLevel = LOGMODUS.NORMAL
 
 loggerName = Path(__file__).stem
-logger = getPrettyLogger(loggerName, LOGMODUS.NORMAL, FILELOGGING.INACTIVE)
+logger = getPrettyLogger(loggerName, logLevel, FILELOGGING.INACTIVE)
 
-logger.info("*** Initialise input arguments: SUCCESS ***")
-logger.info("*** Initialise logger: SUCCESS ***")
+logger.info("*** Initialise input arguments: SUCCESS ***\n")
+logger.info("*** Initialise logger: SUCCESS ***\n")
 
-                    
+
 ###################################################################################################
 #                                Global Variables                                                 #
 ###################################################################################################
@@ -87,85 +90,14 @@ mealDictFile = Path(__file__).parent / "mealList.yaml"
 # Path to macro list yaml config file
 macroDictFile = Path(__file__).parent / "macroList.yaml"
 
-# dictionary of incredience to macros configured by user yaml files -------------------------------
-#
-#   incredience1 {
-#                    kcal: #kcal,
-#                    carbs: #carbs,
-#                    protein: #protein,
-#                    fat: #fat,
-#                    metric: {'unit', 'weight'}
-#                 }
-#
-#   incredience2 ...
-#
-# Note: Metric determines if given values are for an item or 100g
-# -------------------------------------------------------------------------------------------------
-macroDict = {}
+# List of ingredients extracted from yaml
+ingredientList = []
 
-# dictionary of meals given by yaml file-----------------------------------------------------------
-#
-#   Meal1 {
-#               ingredient1: amount,
-#               ingredient2: amount,
-#               ingredient3: amount,
-#               ingredient4: amount
-#               option: {
-#                           item1: amount,
-#                           item2: amount
-#                       },
-#                       {
-#                           item3: amount,
-#                           item4: amount
-#                       }
-#               watchList: [item1, item2, item3]
-#         },
-#
-#   Meal2 ...
-#
-# -------------------------------------------------------------------------------------------------
-mealDict = {}
-
-# dictionary of meals with resolved options and removed watchlsit ---------------------------------
-#
-#   Meal1 {
-#               ingredient1: amount,
-#               ingredient2: amount,
-#               ingredient3: amount,
-#               ingredient4: amount,
-#         }, 
-#
-#   Meal2 ...
-#
-# -------------------------------------------------------------------------------------------------
-resolvedMealDict = {}
-
-# dictionary of meals given by yaml file-----------------------------------------------------------
-#
-#   Meal1[item1, item2, ...],
-#
-#   Meal2[ ...
-#
-# -------------------------------------------------------------------------------------------------
-watchDict = {}
-
-# dictionary of macros for each meal --------------------------------------------------------------
-#
-#   Meal1 {
-#               kcal: #kcal,
-#               carbs: #carbs,
-#               protein: #protein,
-#               fat: #fat,
-#               watchList: [item1, item2, item3]
-#         },
-#
-#   Meal2 ...
-#
-# -------------------------------------------------------------------------------------------------
-mealMacroDict = {}
+# List of meals extracted from yaml
+mealList = []
 
 # List of chosen meals
-mealList = []
+choosenMealList = []
 
 # Watch items for chosen meals 
 watchList = []
@@ -178,6 +110,96 @@ watchList = []
 #
 # -------------------------------------------------------------------------------------------------
 groceryList = {}
+
+
+###################################################################################################
+#                                classes                                                          #
+###################################################################################################
+
+# class meal --------------------------------------------------------------------------------------
+#
+#   Meal object represents meal recipe with its nutrition
+#   
+#       watchList - list of additives to keep in stock for the meal 
+#   
+#       ingredientList - {
+#                               ingredientObject: amount
+#                               ingredientObject: amount
+#                               ...
+#                         }
+#
+#       options - several mutually exclusive meal variant options  
+#               {
+#                       {
+#                               ingredientObject: amount
+#                               ingredientObject: amount
+#                               ...
+#                       },  
+#                       {
+#                               ingredientObject: amount
+#                               ingredientObject: amount
+#                               ...
+#                       }  
+#                 }
+#
+#       kcal - overall kcal count of the meal
+#
+#       carb - overall carb count of the meal
+#
+#       protein - overall protein count of the meal
+#
+#       fat - overall fat count of the meal
+#
+# -------------------------------------------------------------------------------------------------
+
+class meal:
+    def __init__(self, name, ingredientList, watchList, options = ""):
+        self.name = name
+        self.ingredientList = ingredientList
+        self.watchList = watchList
+        self.options = options
+        self.kcal = 0
+        self.carb = 0
+        self.protein = 0
+        self.fat = 0
+
+    def __str__(self):
+        """
+        Overload __str__ method to enable fancy printing and logger support on print operations.
+        """
+        print("hello world")
+
+# class meal --------------------------------------------------------------------------------------
+#
+#   Ingredient object represents the nutrition stats of the ingredient
+#   
+#       kcal - kcal count of the ingredient per metric
+#
+#       carb - carb count of the ingredient per metric
+#
+#       protein - protein count of the ingredient per metric
+#   
+#       fat - count of the ingredient per metric
+#  
+#       metric - measuring unit of the ingrdient, either "unit" or "gram"
+#
+# -------------------------------------------------------------------------------------------------
+
+class ingredient:
+    def __init__(self, name, kcal, carb, protein, fat, metric = "gram"):
+        self.name = name
+        self.kcal = kcal
+        self.carb = carb
+        self.protein = protein
+        self.fat = fat
+        self.metric = metric
+
+    def __str__(self):
+        """
+        Overload __str__ method to enable fancy printing and logger support on print operations.
+        """
+        print("hello world")
+
 
 ###################################################################################################
 #                                Functions                                                        # 
@@ -192,12 +214,13 @@ def init():
         sys.stderr.write("You need Python 3.5 or greater to run this script \n")
         sys.exit(1)
     else:
-        logger.info("*** Checking the python version: SUCCESS ***")
+        logger.info("*** Checking the python version: SUCCESS ***\n")
 
     # check if both yaml config files exist
-    if not (Path(mealDictFile).is_file() and Path(macroDictFile).is_file()):
-        logger.error("Could not find yaml config files. Make sure mealList.yaml and macroList. \
-                      yaml exist. Exiting ...")
+    if not Path(mealDictFile).is_file() or not Path(macroDictFile).is_file():
+        logger.error("Could not find yaml config files. Make sure mealList.yaml exists here ({}) \
+                      and macroList here: ({}). yaml exist. Exiting ...".format(Path(mealDictFile), \
+                      Path(macroDictFile)))
         sys.exit(1)        
     
     # Init logger for helper functions
@@ -207,6 +230,36 @@ def readYamlFiles():
     """
     Reads both meal and macro config yaml files, stores the data in python dictionarys and 
     returns both.
+
+    Meal yaml: 
+                Meal1 {
+                        ingredient1: amount,
+                        ingredient2: amount,
+                        ingredient3: amount,
+                        ingredient4: amount
+                        option: {
+                                    item1: amount,
+                                    item2: amount
+                                },
+                                {
+                                    item3: amount,
+                                    item4: amount
+                                }
+                        watchList: [item1, item2, item3]
+                    },
+            
+                Meal2 ...
+
+    Macro yaml:
+                Ingredient1 {
+                                carbs: amount
+                                fat: amount
+                                protein: amount
+                                kcal: amount
+                            },
+                
+                Ingredient2 ...
+    
     """    
     with open(macroDictFile, 'r') as stream:
         try:
@@ -222,18 +275,20 @@ def readYamlFiles():
             logger.error("*** Meal list is invalid. Reading the file gives the following error: \
                           {}. Exiting ...".format(exc))
 
-    logger.debug("macro dictionary: {}".format(yaml.dump(macroDict)))
-    logger.debug("meal dictionary: {}".format(yaml.dump(mealDict)))
+    logger.debug("macro dictionary:\n{}\n\n".format(yaml.dump(macroDict)))
+    logger.debug("meal dictionary:\n{}\n\n".format(yaml.dump(mealDict)))
     return mealDict, macroDict
 
 
 def resolveOptions(mealDict):
     """
-    Chooses one of every given option 
+    The mealDict may contain different options for a single meal. This script parses all given 
+    options, chooses the best fitting one and resolves the dictionary accordingly.
+    #TODO: [FEATURE] Extract the best option, not just a random one
     """
     resolvedMealDict = {}
 
-    logger.debug("resolvedMealDict: {}".format(yaml.dump(resolvedMealDict)))
+    logger.debug("resolvedMealDict:\n{}\n\n".format(yaml.dump(resolvedMealDict)))
     return resolvedMealDict
 
 
@@ -242,8 +297,9 @@ def splitMealDict(tmpMealDict):
     Separates the watchlist from each meal and returns both parts autonomous.
     """
     resolvedTmpMealDict = {}
-    logger.debug("Split up tmpMealDict: {}".format(yaml.dump(resolvedTmpMealDict)))
-    logger.debug("watchDict: {}".format(yaml.dump(watchDict)))
+
+    logger.debug("Split up tmpMealDict:\n {}\n\n".format(yaml.dump(resolvedTmpMealDict)))
+    logger.debug("watchDict:\n{}\n\n".format(yaml.dump(watchDict)))
     return resolvedTmpMealDict, watchDict
 
 
@@ -254,7 +310,7 @@ def generateMealMacroDict(mealDict, macroDict):
     """
     mealMacroDict = {}
 
-    logger.debug("mealMacroDict: {}".format(yaml.dump(mealMacroDict)))
+    logger.debug("mealMacroDict:\n{}\n\n".format(yaml.dump(mealMacroDict)))
     return mealMacroDict
 
 
@@ -266,7 +322,7 @@ def lowCarbFilter(mealDict, mealMacroDict):
        # for ingredience 
     lowCarbMealDict = {}
 
-    logger.debug("lowCarbMealDict: {}".format(yaml.dump(lowCarbMealDict)))
+    logger.debug("lowCarbMealDict:\n{}\n\n".format(yaml.dump(lowCarbMealDict)))
     return lowCarbMealDict
 
 
@@ -278,7 +334,9 @@ def chooseMeals(resolvedMealDict):
     to support variety
     TODO: Try to match the kcal goal as close as possible instead of simply adding items 
     """
-    logger.debug("mealList: {}".format(yaml.dump(mealList)))
+    mealList = []
+
+    logger.debug("mealList:\n{}\n\n".format(yaml.dump(mealList)))
     return mealList
 
 
@@ -290,11 +348,11 @@ def generateGroceryList(mealList, mealDict):
     tmpGroceryList = {}
 
 
-    logger.debug("Unresolved groceryList: {}".format(yaml.dump(tmpGroceryList)))
+    logger.debug("Unresolved groceryList:\n{}\n\n".format(yaml.dump(tmpGroceryList)))
     # get rid of double entries in grocery dict
     groceryList = resolveDoubleEntries(tmpGroceryList)
     
-    logger.debug("groceryList: {}".format(yaml.dump(groceryList)))
+    logger.debug("groceryList:\n{}\n\n".format(yaml.dump(groceryList)))
     return groceryList
 
 
@@ -303,8 +361,9 @@ def generateWatchList(watchDict, mealList):
     watchDict contains the watch items for each meal and mealList the chose meals. 
     The function will create a list of watch items for the chosen meals and return ist.
     """
+    watchList = []
     
-    logger.debug("watchList: {}".format(yaml.dump(watchList)))
+    logger.debug("watchList:\n{}\n\n".format(yaml.dump(watchList)))
     return watchList
 
 
@@ -324,7 +383,7 @@ if __name__ == '__main__':
     #TODO [FEATURE] Support of Pre and Postworkout meals
 
     init()
-
+    logger.info("*** Prepare data ***\n")
     # Create resolvedMealDict and mealMacroDict ---------------------------------------------------
     # Read user configured yaml files
     mealDict, macroDict = readYamlFiles()
@@ -345,13 +404,14 @@ if __name__ == '__main__':
         resolvedMealDict = tmpMealDict
     # ---------------------------------------------------------------------------------------------
 
+    # Create final results ------------------------------------------------------------------------
+    logger.info("*** Generating results ***\n")
 
-    # Create mealList, groceryList and watchList ---------------------------------------------------
-    mealList = chooseMeals(resolvedMealDict)
+    mealList = chooseMeals(resolvedMealDict)    
 
-    # Create a grocery list from given meals
+    # Create a grocery list from choosen meals
     groceryList = generateGroceryList(mealList, resolvedMealDict)
-
+ 
     watchList = generateWatchList(watchDict, mealList)
     # ---------------------------------------------------------------------------------------------
 
