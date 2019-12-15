@@ -1,12 +1,12 @@
 exampleIngredience1:
-  Carbs: 10
-  Fat: 0
-  Protein: 2
+  carbs: 10
+  fat: 0
+  protein: 2
   kcal: 100
   
 exampleIngredience2:
-  Carbs: 10
-  Fat: 0
-  Protein: 2
+  carbs: 10
+  fat: 0
+  protein: 2
   kcal: 100
   
