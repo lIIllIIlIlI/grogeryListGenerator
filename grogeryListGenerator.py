@@ -170,14 +170,13 @@ class meal:
         mealDescriptionString = "\n"
         mealDescriptionString += "<class: " + self.__class__.__name__ + ",\n"
         mealDescriptionString += " name: " + str(self.name) + ",\n"
-        mealDescriptionString += " ingrdients: " + str(self.ingredientList) + ",\n"
+        mealDescriptionString += " ingredients: " + str(", ".join(self.ingredientDict.keys())) + ",\n"
         mealDescriptionString += " watchList: " + str(self.watchList) + ",\n"
         mealDescriptionString += " macros (K|C|P|F): " + str(self.kcal) + " " + \
                                    str(self.carb) + " " + str(self.protein) + " " + \
                                    str(self.fat) + ",\n"
         mealDescriptionString += " watchList: " + str(self.watchList) + ",\n"
-        mealDescriptionString += " watchList: " + str(self.watchList) + ",\n"
-        mealDescriptionString += " name: " + str(self.name) + " >"
+        mealDescriptionString += " name: " + str(self.name) + " > \b\n"
         return mealDescriptionString
 
 # class meal --------------------------------------------------------------------------------------
@@ -215,7 +214,7 @@ class ingredient:
         ingredientDescriptionString += " macros (K|C|P|F): " + str(self.kcal) + " " + \
                                    str(self.carb) + " " + str(self.protein) + " " + \
                                    str(self.fat) + ",\n"
-        ingredientDescriptionString += " metric: " + str(self.metric) + ">\n"
+        ingredientDescriptionString += " metric: " + str(self.metric) + "> \n\n"
         return ingredientDescriptionString
 
 
@@ -380,7 +379,7 @@ def generateIngredientObjectList(ingredientDict):
 
     return ingredientObjectListInit
 
-def convertMealToObject(mealName, mealData, ingredientObjectList):
+def convertMealToObject(mealName, mealData, IngredientObjectList):
     """
     Converts the dictionary meal into an object of meal class.
 
@@ -401,25 +400,38 @@ def convertMealToObject(mealName, mealData, ingredientObjectList):
 
     output: object class meal
     """
-    mealObject = ""
-    ingredientList = []
+    mealObject = None
+    ingredientDict = {}
 
+    # catch and handle options
     if "options" in mealData:
         options = mealData['options']        
         del mealData['options']
     else:
         options = ""
 
+    # catch and handle watchList
     if "watchList" in mealData:
         watchList = mealData['watchList']        
         del mealData['watchList']
     else:
         watchList = ""
 
-    # only ingredients left in mealData dictionary
-    for ingredient in mealData:
-        #TODO: Hier werden einfach nur die übrig gebliebnen key/value pairs übernommen. Es sollen aber die tatsächlichen ingredient objekte eingetragen werden
-        ingredientList.append(ingredient)
+    #TODO: Es muss ein Container mit allen vorhandenen ingredients und ihren entsprechenden 
+    # Mengen erstellt werden. Anschließend wird das meal erstellt und auf validität überprüft.
+    # Ist beides erfüllt wird das Objekt zurückgegeben. Als Container könnte ein Dictionary of 
+    # Dictionarys herhalten das jeweils ein "Object" und "Amount" Key enthält. Es wäre daher einfacher
+    # entweder eine Kindklasse mealIngredient zu erstellen die zusätzlich amount erhält oder die Klasse
+    # um diesen Wert zu erweitern. Zweiteres hätte den Vorteil, dass normale Ingredients und mealIngrdients
+    # klar voneinander getrennt sind. In beiden Fällen kommt man anschließend mit einer einfachen Liste aus.
+    # Die Klasse muss entsprechend angepasst werden. 
+
+    # catch and handle everything else which should only be ingrdients
+    for ingredient in mealData.keys:
+        ingredientObject = getIngredientObject(IngredientObjectList, ingredient)
+        # ignore non-existing ingredients
+        if ingredientObject:
+            print("placdeholder")        
 
     if isMealDataValid(ingredientDict, watchList, options, ingredientObjectList):
         mealObject = meal(mealName, ingredientDict, watchList, options)
@@ -473,6 +485,18 @@ def getValueFromDictionary(dictionary, dictionaryName, key):
         logger.warning('Ingredient {} contains no {} value and will be ignored'.format(dictionaryName, key))
         value = None
     return value
+
+def getIngredientObject(ingredientObjectList, ingredientName):
+    """
+    Tries to extract and return the requested ingredient from ingredientObjectList. Returns
+    None if requested ingredient could not be found. 
+    """
+    requestedObject = None
+    for ingredientObject in ingredientName:
+        if ingredientObject.name == ingredientName:
+            requestedObject = ingredientObject
+    
+    return requestedObject
 
 def isMealDataValid(ingredientDict, watchList, options, ingredientObjectList):
     """
