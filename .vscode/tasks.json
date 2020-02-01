@@ -1,0 +1,32 @@
+{
+    // See https://go.microsoft.com/fwlink/?LinkId=733558
+    // for the documentation about the tasks.json format
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "default run",
+            "command": "python",
+            "type": "shell",
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            },
+            "presentation": {
+                "reveal": "always",
+                "panel": "new",
+                "focus": true
+            },
+            "args": [
+                "${workspaceRoot}\\grogeryListGenerator.py",
+                "--kcal",
+                "3200",
+                "--days",
+                "3",
+                "--verbose"
+            ],
+            "problemMatcher": [
+                "$go"
+            ]
+        },
+    ]
+}

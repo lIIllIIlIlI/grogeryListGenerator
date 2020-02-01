@@ -20,6 +20,7 @@
 import logging
 import sys
 import yaml
+import copy
 
 from argparse import ArgumentParser
 from pathlib import Path
@@ -122,25 +123,15 @@ groceryList = {}
 #   
 #       watchList - list of additives to keep in stock for the meal 
 #   
-#       ingredientList - {
-#                               ingredientObject: amount
-#                               ingredientObject: amount
-#                               ...
-#                         }
+#       ingredientList - list of fully resolved ingredients
+#               [
+#                   ingredient1,
+#                   ingredient2,
+#                   ...
+#               ]
 #
 #       options - several mutually exclusive meal variant options  
-#               {
-#                       {
-#                               ingredientObject: amount
-#                               ingredientObject: amount
-#                               ...
-#                       },  
-#                       {
-#                               ingredientObject: amount
-#                               ingredientObject: amount
-#                               ...
-#                       }  
-#                 }
+#               [[ingredient1, ingredient2, ..], [ingrdient 1, ...]]
 #
 #       kcal - overall kcal count of the meal
 #
@@ -153,11 +144,11 @@ groceryList = {}
 # -------------------------------------------------------------------------------------------------
 
 class meal:
-    def __init__(self, name, ingredientDict, watchList, options):
+    def __init__(self, name, watchList, options, ingredientList = []):
         self.name = name
-        self.ingredientDict = ingredientDict
         self.watchList = watchList
         self.options = options
+        self.ingredientList = ingredientList
         self.kcal = 0
         self.carb = 0
         self.protein = 0
@@ -196,13 +187,14 @@ class meal:
 # -------------------------------------------------------------------------------------------------
 
 class ingredient:
-    def __init__(self, name, kcal, carb, protein, fat, metric):
+    def __init__(self, name, kcal, carb, protein, fat, metric, amount = 0):
         self.name = name
         self.kcal = kcal
         self.carb = carb
         self.protein = protein
         self.fat = fat
         self.metric = metric
+        self.amount = amount
 
     def __repr__(self):
         """
@@ -401,14 +393,18 @@ def convertMealToObject(mealName, mealData, IngredientObjectList):
     output: object class meal
     """
     mealObject = None
-    ingredientDict = {}
+    ingredientList = []
+    resolveStatus = True
 
     # catch and handle options
     if "options" in mealData:
-        options = mealData['options']        
+        options = convertOptionsToIngredientList(mealData['options'],IngredientObjectList)  
+        if options == []:
+            logger.warning("Meal {} could not be resolved because given options could not be resolved.".format(mealName))
         del mealData['options']
     else:
-        options = ""
+        options = None
+        resolveStatus = False
 
     # catch and handle watchList
     if "watchList" in mealData:
@@ -417,24 +413,18 @@ def convertMealToObject(mealName, mealData, IngredientObjectList):
     else:
         watchList = ""
 
-    #TODO: Es muss ein Container mit allen vorhandenen ingredients und ihren entsprechenden 
-    # Mengen erstellt werden. Anschließend wird das meal erstellt und auf validität überprüft.
-    # Ist beides erfüllt wird das Objekt zurückgegeben. Als Container könnte ein Dictionary of 
-    # Dictionarys herhalten das jeweils ein "Object" und "Amount" Key enthält. Es wäre daher einfacher
-    # entweder eine Kindklasse mealIngredient zu erstellen die zusätzlich amount erhält oder die Klasse
-    # um diesen Wert zu erweitern. Zweiteres hätte den Vorteil, dass normale Ingredients und mealIngrdients
-    # klar voneinander getrennt sind. In beiden Fällen kommt man anschließend mit einer einfachen Liste aus.
-    # Die Klasse muss entsprechend angepasst werden. 
-
     # catch and handle everything else which should only be ingrdients
     for ingredient in mealData.keys:
         ingredientObject = getIngredientObject(IngredientObjectList, ingredient)
-        # ignore non-existing ingredients
         if ingredientObject:
-            print("placdeholder")        
+            ingredientObject.amount = mealData[ingredient]
+            ingredientList.append(ingredientObject)
+        else:
+            logger.warning("Meal {} could not be resolved because ingredient {} in not be found in the ingredient list.".format(mealName, ingredientObject.name))
+            resolveStatus = False
 
-    if isMealDataValid(ingredientDict, watchList, options, ingredientObjectList):
-        mealObject = meal(mealName, ingredientDict, watchList, options)
+    if resolveStatus:
+        mealObject = meal(mealName, watchList, options, ingredientList)
 
     return mealObject
 
@@ -498,19 +488,6 @@ def getIngredientObject(ingredientObjectList, ingredientName):
     
     return requestedObject
 
-def isMealDataValid(ingredientDict, watchList, options, ingredientObjectList):
-    """
-    Performs semantical check on the given meal data and return wether the data are valid.
-    Performs the following checks:
-        - All ingrdients in ingrdient list exist
-        - All 
-    """
-    isIngredientValid = True
-
-
-    #TODO: Implement me 
-    return isIngredientValid
-
 def isIngredientDataValid(kcal, carbs, protein, fat, metric, ingredientName):
     """
     Performs semantical check on the given ingredient data and return wether the data are valid.
@@ -544,6 +521,43 @@ def isIngredientDataValid(kcal, carbs, protein, fat, metric, ingredientName):
             logger.warning('The value "{}" of Ingredient {} contains invalid characters. Ingredient will be ignored'.format(protein, ingredientName))
 
     return isIngredientValid
+
+def convertOptionsToIngredientList(optionsDict,IngredientObjectList):
+    """
+    Converts a dictionary of ingredient options into a list of list of ingredient objects
+
+    Input:
+    optionsDict = {
+        {
+            ingredientName1: amount,
+            ingredientNam2: amount,
+            ...
+        },
+        {
+            ingredientName1: amount,
+            ...
+        },
+        ...
+    }
+
+    output:
+    optionsDict = [
+        [ingredient1, ingredient2, ..], [ingredient1, ...]
+    ]
+    """
+    options = []
+    for idx, option in enumerate(optionsDict):
+        for ingredient in option:
+            ingredientObject = getIngredientObject(IngredientObjectList, ingredient)
+            if ingredientObject:
+                options[idx].append(ingredientObject)
+            else:
+                options = []
+                break
+        else:
+            continue
+        break
+    return options
 
 
 def resolveOptions(mealDict):        
