@@ -21,18 +21,23 @@ import logging
 import sys
 import yaml
 import copy
+import random
 
 from argparse import ArgumentParser
 from pathlib import Path
 from enum import Enum
-from random import choice
 
 from Lib.helperFunctions import setLogger
 from Lib.helperFunctions import getPrettyLogger
 from Lib.helperFunctions import LOGMODUS
 from Lib.helperFunctions import FILELOGGING
 from Lib.helperFunctions import resolveDoubleEntries
+from Lib.helperFunctions import registerHelperFunctionsLogger
 
+from meal import meal
+from meal import registerMealLogger
+from ingredient import ingredient
+from ingredient import registerIngredientLogger
 
 ###################################################################################################
 #                                Input Arguments                                                  #
@@ -46,6 +51,8 @@ parser.add_argument('--days', help = 'Number of days the grogerys should last', 
 parser.add_argument('--kcal', help = 'Number of calories required for a day without sport', \
                     type = int, required = True)
 parser.add_argument('--lowcarb','-n', help = 'Make the generator filter out high carb meals', \
+                    action="store_true", default=False)
+parser.add_argument('--keto','-n', help = 'Make the generator filter out carb meals', \
                     action="store_true", default=False)
 parser.add_argument('--workout', help='Number of workouts during the choosen period of time', \
                     type = int, default = False)
@@ -114,126 +121,41 @@ groceryList = {}
 
 
 ###################################################################################################
-#                                classes                                                          #
-###################################################################################################
-
-# class meal --------------------------------------------------------------------------------------
-#
-#   Meal object represents meal recipe with its nutrition
-#   
-#       watchList - list of additives to keep in stock for the meal 
-#   
-#       ingredientList - list of fully resolved ingredients
-#               [
-#                   ingredient1,
-#                   ingredient2,
-#                   ...
-#               ]
-#
-#       options - several mutually exclusive meal variant options  
-#               [[ingredient1, ingredient2, ..], [ingrdient 1, ...]]
-#
-#       kcal - overall kcal count of the meal
-#
-#       carb - overall carb count of the meal
-#
-#       protein - overall protein count of the meal
-#
-#       fat - overall fat count of the meal
-#
-# -------------------------------------------------------------------------------------------------
-
-class meal:
-    def __init__(self, name, watchList, options, ingredientList = []):
-        self.name = name
-        self.watchList = watchList
-        self.options = options
-        self.ingredientList = ingredientList
-        self.kcal = 0
-        self.carb = 0
-        self.protein = 0
-        self.fat = 0
-
-    def __repr__(self):
-        """
-        Overload __repr__ method to enable fancy printing and logger support on print operations.
-        """
-        mealDescriptionString = "\n"
-        mealDescriptionString += "<class: " + self.__class__.__name__ + ",\n"
-        mealDescriptionString += " name: " + str(self.name) + ",\n"
-        mealDescriptionString += " ingredients: " + str(", ".join(self.ingredientDict.keys())) + ",\n"
-        mealDescriptionString += " watchList: " + str(self.watchList) + ",\n"
-        mealDescriptionString += " macros (K|C|P|F): " + str(self.kcal) + " " + \
-                                   str(self.carb) + " " + str(self.protein) + " " + \
-                                   str(self.fat) + ",\n"
-        mealDescriptionString += " watchList: " + str(self.watchList) + ",\n"
-        mealDescriptionString += " name: " + str(self.name) + " > \b\n"
-        return mealDescriptionString
-
-# class meal --------------------------------------------------------------------------------------
-#
-#   Ingredient object represents the nutrition stats of the ingredient
-#   
-#       kcal - kcal count of the ingredient per metric
-#
-#       carb - carb count of the ingredient per metric
-#
-#       protein - protein count of the ingredient per metric
-#   
-#       fat - count of the ingredient per metric
-#  
-#       metric - measuring unit of the ingrdient, either "unit" or "gram"
-#
-# -------------------------------------------------------------------------------------------------
-
-class ingredient:
-    def __init__(self, name, kcal, carb, protein, fat, metric, amount = 0):
-        self.name = name
-        self.kcal = kcal
-        self.carb = carb
-        self.protein = protein
-        self.fat = fat
-        self.metric = metric
-        self.amount = amount
-
-    def __repr__(self):
-        """
-        Overload __repr__ method to enable fancy printing and logger support on print operations.
-        """
-        ingredientDescriptionString = "\n"
-        ingredientDescriptionString += "<class: " + self.__class__.__name__ + ",\n"
-        ingredientDescriptionString += " name: " + str(self.name) + ",\n"
-        ingredientDescriptionString += " macros (K|C|P|F): " + str(self.kcal) + " " + \
-                                   str(self.carb) + " " + str(self.protein) + " " + \
-                                   str(self.fat) + ",\n"
-        ingredientDescriptionString += " metric: " + str(self.metric) + "> \n\n"
-        return ingredientDescriptionString
-
-
-###################################################################################################
-#                                Functions                                                        # 
+#                                private functions                                                # 
 ###################################################################################################
 
 def init():
     """
     The init functions performs a couple of initialization and checks.
     """ 
+    checkInputArgs()
+    checkPythonVersion()
+    checkConfigFileExist()
+    registerLoggers()
+
+def registerLoggers():
+    registerMealLogger(logger)
+    registerIngredientLogger(logger)
+    registerHelperFunctionsLogger(logger)
+
+def checkConfigFileExist():
+    if not mealDictFile or not ingredientDictFile:
+        logger.error("Could not find yaml config files. Make sure mealList.yaml exists here ({}) \
+                      and ingredientList here: ({}). yaml exist. Exiting ...".format(Path(mealDictFile), \
+                      Path(ingredientDictFile)))
+        sys.exit(1)     
+
+def checkInputArgs():
+    if args.lowcarb and args.keto:
+        logger.warning("Lowcarb option has no effect when keto option is set")
+
+def checkPythonVersion():
     # Check if Python >= 3.5 is installed
     if sys.version_info < (3, 5, 0):
         sys.stderr.write("You need Python 3.5 or greater to run this script \n")
         sys.exit(1)
     else:
         logger.info("*** Checking the python version: SUCCESS ***\n")
-   
-    # check if both yaml config files exist
-    if not mealDictFile or not ingredientDictFile:
-        logger.error("Could not find yaml config files. Make sure mealList.yaml exists here ({}) \
-                      and ingredientList here: ({}). yaml exist. Exiting ...".format(Path(mealDictFile), \
-                      Path(ingredientDictFile)))
-        sys.exit(1)        
-    
-    # Init logger for helper functions
-    setLogger(logger)
 
 def readYamlFiles():
     """
@@ -289,7 +211,6 @@ def readYamlFiles():
     logger.debug("meal dictionary:\n{}\n\n".format(yaml.dump(mealDict)))
     return mealDict, ingredientDict
 
-
 def generateMealObjectList(mealDict, ingredientObjectList):
     """
     Generates and returns a list of meal objects from the given meal dictionary.
@@ -335,7 +256,6 @@ def generateMealObjectList(mealDict, ingredientObjectList):
         logger.debug(meal)
 
     return mealObjectListInit
-
 
 def generateIngredientObjectList(ingredientDict):
     """
@@ -400,7 +320,9 @@ def convertMealToObject(mealName, mealData, IngredientObjectList):
     if "options" in mealData:
         options = convertOptionsToIngredientList(mealData['options'],IngredientObjectList)  
         if options == []:
-            logger.warning("Meal {} could not be resolved because given options could not be resolved.".format(mealName))
+            logger.error("Meal {} could not be resolved because given options could not be resolved. Please adapt the yaml config".format(mealName))
+
+        mealData.update(options)
         del mealData['options']
     else:
         options = None
@@ -414,7 +336,7 @@ def convertMealToObject(mealName, mealData, IngredientObjectList):
         watchList = ""
 
     # catch and handle everything else which should only be ingrdients
-    for ingredient in mealData.keys:
+    for ingredient in mealData.keys():
         ingredientObject = getIngredientObject(IngredientObjectList, ingredient)
         if ingredientObject:
             ingredientObject.amount = mealData[ingredient]
@@ -427,7 +349,6 @@ def convertMealToObject(mealName, mealData, IngredientObjectList):
         mealObject = meal(mealName, watchList, options, ingredientList)
 
     return mealObject
-
 
 def convertIngredientToObject(ingredientName, ingredientData):
     """
@@ -482,7 +403,7 @@ def getIngredientObject(ingredientObjectList, ingredientName):
     None if requested ingredient could not be found. 
     """
     requestedObject = None
-    for ingredientObject in ingredientName:
+    for ingredientObject in ingredientObjectList:
         if ingredientObject.name == ingredientName:
             requestedObject = ingredientObject
     
@@ -522,7 +443,7 @@ def isIngredientDataValid(kcal, carbs, protein, fat, metric, ingredientName):
 
     return isIngredientValid
 
-def convertOptionsToIngredientList(optionsDict,IngredientObjectList):
+def convertOptionsToIngredientList(optionsDict, IngredientObjectList):
     """
     Converts a dictionary of ingredient options into a list of list of ingredient objects
 
@@ -545,57 +466,20 @@ def convertOptionsToIngredientList(optionsDict,IngredientObjectList):
         [ingredient1, ingredient2, ..], [ingredient1, ...]
     ]
     """
-    options = []
-    for idx, option in enumerate(optionsDict):
-        for ingredient in option:
-            ingredientObject = getIngredientObject(IngredientObjectList, ingredient)
-            if ingredientObject:
-                options[idx].append(ingredientObject)
-            else:
-                options = []
-                break
+    resolvedOption = []
+    option = getRandomOption(optionsDict)
+    for optionIngredient in option:
+        optionIngredientObject = getIngredientObject(IngredientObjectList, optionIngredient)
+        if optionIngredientObject:
+            optionIngredientObject.amount = option[optionIngredient]
+            resolvedOption.append(optionIngredientObject)
         else:
-            continue
-        break
-    return options
+            option = []
+            break
+    return option
 
-
-def resolveOptions(mealDict):        
-    """
-    The mealDict may contain different options for a single meal. This script parses all given 
-    options, chooses the best fitting one and resolves the dictionary accordingly.
-    #TODO: [FEATURE] Extract the best option, not just a random one
-    """
-    resolvedMealDict = {}
-
-    logger.debug("resolvedMealDict:\n{}\n\n".format(yaml.dump(resolvedMealDict)))
-    return resolvedMealDict
-
-
-def splitMealDict(tmpMealDict):
-    """
-    Separates the watchlist from each meal and returns both parts autonomous.
-    """
-    for meal in tmpMealDict:
-        print(meal)
-    resolvedTmpMealDict = {}
-    watchDict = {}
-
-    logger.debug("Split up tmpMealDict:\n {}\n\n".format(yaml.dump(resolvedTmpMealDict)))
-    logger.debug("watchDict:\n{}\n\n".format(yaml.dump(watchDict)))
-    return resolvedTmpMealDict, watchDict
-
-
-def generateMealingredientDict(mealDict, ingredientDict):
-    """
-    Creates and returns  a dictionary containing the ingredient nutritions for every meal listed
-    in the meal dict.
-    """
-    mealIngredientDict = {}
-
-    logger.debug("mealingredientDict:\n{}\n\n".format(yaml.dump(mealIngredientDict)))
-    return mealIngredientDict
-
+def getRandomOption(options):
+    return random.choice(options)
 
 def lowCarbFilter(mealDict, mealingredientDict):
     """
@@ -638,19 +522,7 @@ def generateGroceryList(mealList, mealDict):
     logger.debug("groceryList:\n{}\n\n".format(yaml.dump(groceryList)))
     return groceryList
 
-
-def generateWatchList(watchDict, mealList):
-    """
-    watchDict contains the watch items for each meal and mealList the chose meals. 
-    The function will create a list of watch items for the chosen meals and return ist.
-    """
-    watchList = []
-    
-    logger.debug("watchList:\n{}\n\n".format(yaml.dump(watchList)))
-    return watchList
-
-
-def outputResults(mealList, groceryList, watchList):
+def outputResults(mealList):
     """
     Outputs the generated results
     #TODO [FEATURE] Implement file output option
@@ -658,6 +530,17 @@ def outputResults(mealList, groceryList, watchList):
     
     return
 
+def applyLowcarbFilter(mealObjectList):
+    mealObjectFilteredList = []
+    return mealObjectFilteredList
+
+def applyKetoFilter(mealObjectList):
+    mealObjectFilteredList = []
+    return mealObjectFilteredList
+
+def resolveMealList(mealObjectList):
+    mealList = []
+    return mealList
 
 ###################################################################################################
 #                                Driver                                                           # 
@@ -665,45 +548,37 @@ def outputResults(mealList, groceryList, watchList):
 if __name__ == '__main__':
     #TODO [FEATURE] Support of Pre and Postworkout meals
 
+    # initialize
     init()
-    logger.info("*** Prepare data ***\n")
-    # Create resolvedMealDict and mealingredientDict ---------------------------------------------------
-    # Read user configured yaml files
+    logger.info("*** initialize ***\n")
     mealDict, ingredientDict = readYamlFiles()
 
-    # create fully resolved ingrdient object list
-    ingredientObjectList = generateIngredientObjectList(ingredientDict)
+    # create initial object list 
+    logger.info("*** create initial object list ***\n")
+    ingredientObjectListInit = generateIngredientObjectList(ingredientDict)
 
-    # create initial (unresolved) meal object list
-    mealObjectListInit = generateMealObjectList(mealDict, ingredientObjectList)
+    mealObjectListInit = generateMealObjectList(mealDict, ingredientObjectListInit)
 
-    # Resolve options in meal list
-    tmpMealDict = resolveOptions(mealDict)
+    sys.exit(1)
 
-    # Split meals and watch items convertDictToObjects
-    tmpMealDict, watchDict = splitMealDict(tmpMealDict)
+    # resolve object list 
+    logger.info("*** resolve object list  ***\n")
+    mealObjectListResolved = resolveMealList(mealObjectListInit)
 
-    # Generate a dict that stores ingredients for every meal
-    mealingredientDict = generateMealingredientDict(mealDict, ingredientDict)
-
-    # Filter non lowcarb meals
+    mealObjectFilteredList = mealObjectListResolved
     if args.lowcarb:
-        resolvedMealDict = lowCarbFilter(tmpMealDict, mealingredientDict)
-    else:
-        resolvedMealDict = tmpMealDict
-    # ---------------------------------------------------------------------------------------------
+        mealObjectFilteredList = applyLowcarbFilter(mealObjectListResolved)
 
-    # Create final results ------------------------------------------------------------------------
-    logger.info("*** Generating results ***\n")
+    elif args.keto:
+        mealObjectFilteredList = applyKetoFilter(mealObjectListResolved)
 
-    mealList = chooseMeals(resolvedMealDict)    
+    # create meal plan
+    logger.info("*** create meal plan  ***\n")
 
-    # Create a grocery list from choosen meals
-    groceryList = generateGroceryList(mealList, resolvedMealDict)
- 
-    watchList = generateWatchList(watchDict, mealList)
-    # ---------------------------------------------------------------------------------------------
+    mealList = chooseMeals(mealObjectFilteredList)    
 
-    # Output generated grocery list to yaml file
-    outputResults(mealList, groceryList, watchList)
+    # Output results
+    logger.info("*** output results  ***\n")
+
+    outputResults(mealList)
 

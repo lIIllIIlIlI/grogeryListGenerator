@@ -8,9 +8,10 @@ exampleMeal1:
 exampleMeal2:
   Bratfett: 20
   # Put in differnt options like this
-  Option:
+  options:
   - krauter: 40
   - Butter: 20
+    Kaese: 10
   Lauch: 10
   Thymian: 2
   kartoffeln: 400

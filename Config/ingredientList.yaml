@@ -9,4 +9,51 @@ exampleIngredience2:
   fat: 0
   protein: 2
   kcal: 100
+
+Bratfett:
+  carbs: 10
+  fat: 0
+  protein: 2
+  kcal: 100
+
+Thymian:
+  carbs: 10
+  fat: 0
+  protein: 2
+  kcal: 100
+
+kartoffeln:
+  carbs: 10
+  fat: 0
+  protein: 2
+  kcal: 100
   
+krauter:
+  carbs: 10
+  fat: 0
+  protein: 2
+  kcal: 100
+
+Butter:
+  carbs: 10
+  fat: 0
+  protein: 2
+  kcal: 100
+
+Lauch:
+  carbs: 10
+  fat: 0
+  protein: 2
+  kcal: 100
+
+Thymian:
+  carbs: 10
+  fat: 0
+  protein: 2
+  kcal: 100
+
+Kaese:
+  carbs: 10
+  fat: 0
+  protein: 2
+  kcal: 100

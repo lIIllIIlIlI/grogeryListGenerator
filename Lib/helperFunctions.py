@@ -6,9 +6,13 @@ from os import makedirs
 from pathlib import Path
 from enum import Enum
 
+import logging
 
-logger = None
+logger = logging.getLogger(__name__) 
 
+registerHelperFunctionsLogger(Logger):
+    global logger
+    logger = Logger
 
 class LOGMODUS(Enum):
     VERBOSE = 0
@@ -19,12 +23,6 @@ class LOGMODUS(Enum):
 class FILELOGGING(Enum):
     INACTIVE = 0
     ACTIVE = 1
-
-
-def setLogger(helperLogger):
-    global logger
-    logger = helperLogger
-
 
 def resolveDoubleEntries(tmpGroceryList):
     """
