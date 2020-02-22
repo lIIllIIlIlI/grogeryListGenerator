@@ -2,7 +2,7 @@ import logging
 
 logger = logging.getLogger(__name__) 
 
-registerIngredientLogger(Logger):
+def registerIngredientLogger(Logger):
     global logger
     logger = Logger
 

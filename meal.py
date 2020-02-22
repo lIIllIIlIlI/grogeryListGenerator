@@ -4,7 +4,7 @@ import logging
 
 logger = logging.getLogger(__name__) 
 
-registerMealLogger(Logger):
+def registerMealLogger(Logger):
     global logger
     logger = Logger
 
@@ -60,3 +60,20 @@ class meal:
         mealDescriptionString += " watchList: " + str(self.watchList) + ",\n"
         mealDescriptionString += " >\n"
         return mealDescriptionString
+
+    def resolveMacros(self):
+        for ingredient in self.ingredientList:
+            if ingredient.metric == "gram":
+                self.kcal += ingredient.kcal * ingredient.amount / 100
+                self.carb += ingredient.carb * ingredient.amount / 100
+                self.protein += ingredient.protein * ingredient.amount / 100
+                self.fat += ingredient.fat * ingredient.fat / 100
+
+            elif ingredient.metric == "unit":
+                self.kcal += ingredient.kcal * ingredient.amount 
+                self.carb += ingredient.carb * ingredient.amount 
+                self.protein += ingredient.protein * ingredient.amount
+                self.fat += ingredient.fat * ingredient.fat
+        return
+    
+    

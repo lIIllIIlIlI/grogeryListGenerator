@@ -27,17 +27,15 @@ from argparse import ArgumentParser
 from pathlib import Path
 from enum import Enum
 
-from Lib.helperFunctions import setLogger
-from Lib.helperFunctions import getPrettyLogger
-from Lib.helperFunctions import LOGMODUS
-from Lib.helperFunctions import FILELOGGING
-from Lib.helperFunctions import resolveDoubleEntries
-from Lib.helperFunctions import registerHelperFunctionsLogger
+from Lib.prettyLogger import getPrettyLogger
+from Lib.prettyLogger import LOGMODUS
+from Lib.prettyLogger import FILELOGGING
+
+from Lib.helperFunctions import *
 
 from meal import meal
-from meal import registerMealLogger
 from ingredient import ingredient
-from ingredient import registerIngredientLogger
+
 
 ###################################################################################################
 #                                Input Arguments                                                  #
@@ -50,9 +48,9 @@ parser.add_argument('--days', help = 'Number of days the grogerys should last', 
                     required = True)
 parser.add_argument('--kcal', help = 'Number of calories required for a day without sport', \
                     type = int, required = True)
-parser.add_argument('--lowcarb','-n', help = 'Make the generator filter out high carb meals', \
+parser.add_argument('--lowcarb', help = 'Make the generator filter out high carb meals', \
                     action="store_true", default=False)
-parser.add_argument('--keto','-n', help = 'Make the generator filter out carb meals', \
+parser.add_argument('--keto', help = 'Make the generator filter out carb meals', \
                     action="store_true", default=False)
 parser.add_argument('--workout', help='Number of workouts during the choosen period of time', \
                     type = int, default = False)
@@ -83,9 +81,6 @@ else:
 
 loggerName = Path(__file__).stem
 logger = getPrettyLogger(loggerName, logLevel, FILELOGGING.INACTIVE)
-
-logger.info("*** Initialise input arguments: SUCCESS ***\n")
-logger.info("*** Initialise logger: SUCCESS ***\n")
 
 
 ###################################################################################################
@@ -119,43 +114,27 @@ watchList = []
 # -------------------------------------------------------------------------------------------------
 groceryList = {}
 
+###################################################################################################
+#                                private classes                                                  # 
+###################################################################################################
+
+# Kcal per carb treshold
+class TRESHOLD(Enum):
+    LOWCARB = 8
+    KETO = 3
 
 ###################################################################################################
 #                                private functions                                                # 
 ###################################################################################################
 
-def init():
+def initialize():
     """
     The init functions performs a couple of initialization and checks.
     """ 
-    checkInputArgs()
+    checkInputArgs(args)
     checkPythonVersion()
-    checkConfigFileExist()
-    registerLoggers()
-
-def registerLoggers():
-    registerMealLogger(logger)
-    registerIngredientLogger(logger)
-    registerHelperFunctionsLogger(logger)
-
-def checkConfigFileExist():
-    if not mealDictFile or not ingredientDictFile:
-        logger.error("Could not find yaml config files. Make sure mealList.yaml exists here ({}) \
-                      and ingredientList here: ({}). yaml exist. Exiting ...".format(Path(mealDictFile), \
-                      Path(ingredientDictFile)))
-        sys.exit(1)     
-
-def checkInputArgs():
-    if args.lowcarb and args.keto:
-        logger.warning("Lowcarb option has no effect when keto option is set")
-
-def checkPythonVersion():
-    # Check if Python >= 3.5 is installed
-    if sys.version_info < (3, 5, 0):
-        sys.stderr.write("You need Python 3.5 or greater to run this script \n")
-        sys.exit(1)
-    else:
-        logger.info("*** Checking the python version: SUCCESS ***\n")
+    checkConfigFileExist(mealDictFile, ingredientDictFile)
+    registerLoggers(logger)
 
 def readYamlFiles():
     """
@@ -207,8 +186,6 @@ def readYamlFiles():
             logger.error("*** Meal list is invalid. Reading the file gives the following error: \
                           {}. Exiting ...".format(exc))
 
-    logger.debug("ingredient dictionary:\n{}\n\n".format(yaml.dump(ingredientDict)))
-    logger.debug("meal dictionary:\n{}\n\n".format(yaml.dump(mealDict)))
     return mealDict, ingredientDict
 
 def generateMealObjectList(mealDict, ingredientObjectList):
@@ -251,9 +228,8 @@ def generateMealObjectList(mealDict, ingredientObjectList):
         sys.exit(1)
 
     # add debug information
-    logger.debug("\n\nList of meal objects after initialization:")
-    for meal in mealObjectListInit:
-        logger.debug(meal)
+    mealNames = [meal.name for meal in mealObjectListInit]
+    logger.info("Extracted meals: \n{}".format(yaml.dump(mealNames)))
 
     return mealObjectListInit
 
@@ -285,11 +261,33 @@ def generateIngredientObjectList(ingredientDict):
         logger.error("No valid ingredients could be created from the ingredient yaml file. Please check your config files. Terminating ...")
         sys.exit(1)
 
-    logger.debug("\n\nList of ingredient objects after initialization:")
-    for ingredient in ingredientObjectListInit:
-        logger.debug(ingredient)
-
     return ingredientObjectListInit
+
+
+
+def getValueFromDictionary(dictionary, dictionaryName, key):
+    """
+    Gets value for given key from given dictionary.
+    Returns None if key could not be found in dictionary.
+    """
+    if key in dictionary:
+        value = dictionary[key]
+    else:
+        logger.warning('Ingredient {} contains no {} value and will be ignored'.format(dictionaryName, key))
+        value = None
+    return value
+
+def getIngredientObject(ingredientObjectList, ingredientName):
+    """
+    Tries to extract and return the requested ingredient from ingredientObjectList. Returns
+    None if requested ingredient could not be found. 
+    """
+    requestedObject = None
+    for ingredientObject in ingredientObjectList:
+        if ingredientObject.name == ingredientName:
+            requestedObject = ingredientObject
+    
+    return requestedObject
 
 def convertMealToObject(mealName, mealData, IngredientObjectList):
     """
@@ -326,7 +324,6 @@ def convertMealToObject(mealName, mealData, IngredientObjectList):
         del mealData['options']
     else:
         options = None
-        resolveStatus = False
 
     # catch and handle watchList
     if "watchList" in mealData:
@@ -384,30 +381,6 @@ def convertIngredientToObject(ingredientName, ingredientData):
         ingredientObject = ingredient(name, int(kcal), int(carbs), int(protein), int(fat), metric)
 
     return ingredientObject
-
-def getValueFromDictionary(dictionary, dictionaryName, key):
-    """
-    Gets value for given key from given dictionary.
-    Returns None if key could not be found in dictionary.
-    """
-    if key in dictionary:
-        value = dictionary[key]
-    else:
-        logger.warning('Ingredient {} contains no {} value and will be ignored'.format(dictionaryName, key))
-        value = None
-    return value
-
-def getIngredientObject(ingredientObjectList, ingredientName):
-    """
-    Tries to extract and return the requested ingredient from ingredientObjectList. Returns
-    None if requested ingredient could not be found. 
-    """
-    requestedObject = None
-    for ingredientObject in ingredientObjectList:
-        if ingredientObject.name == ingredientName:
-            requestedObject = ingredientObject
-    
-    return requestedObject
 
 def isIngredientDataValid(kcal, carbs, protein, fat, metric, ingredientName):
     """
@@ -517,7 +490,6 @@ def generateGroceryList(mealList, mealDict):
 
     logger.debug("Unresolved groceryList:\n{}\n\n".format(yaml.dump(tmpGroceryList)))
     # get rid of double entries in grocery dict
-    groceryList = resolveDoubleEntries(tmpGroceryList)
     
     logger.debug("groceryList:\n{}\n\n".format(yaml.dump(groceryList)))
     return groceryList
@@ -531,46 +503,72 @@ def outputResults(mealList):
     return
 
 def applyLowcarbFilter(mealObjectList):
-    mealObjectFilteredList = []
-    return mealObjectFilteredList
+    """
+    Filters non lowcarb meals from the given list and returns the reduced list.
+    Lowcarb meals have a kcal to carb ratio that exceed the defined treshold.
+    """
+    lowCarbMealObjectList = []
+    filteredMealNames = []
+    for meal in mealObjectList:
+        if meal.kcal / meal.carb > TRESHOLD.LOWCARB:
+            lowCarbMealObjectList.append(meal)
+        else:
+            filteredMealNames.append(meal.name)
+    logger.info("Meals removed by lowcarb filter: \n{}".format(yaml.dump(filteredMealNames)))
+    return lowCarbMealObjectList
 
 def applyKetoFilter(mealObjectList):
-    mealObjectFilteredList = []
-    return mealObjectFilteredList
+    """
+    Filters non keto meals from the given list and returns the reduced list.
+    Lowcarb meals have a kcal to carb ratio that exceed the defined treshold.
+    """
+    ketoMealObjectList = []
+    filteredMealNames = []
+    for meal in mealObjectList:
+        if meal.kcal / meal.carb > TRESHOLD.LOWCARB:
+            ketoMealObjectList.append(meal)
+        else:
+            filteredMealNames.append(meal.name)
+    logger.info("Meals removed by lowcarb filter: \n{}".format(yaml.dump(filteredMealNames)))
+    return ketoMealObjectList
 
 def resolveMealList(mealObjectList):
-    mealList = []
-    return mealList
+    for meal in list(mealObjectList):
+        meal.resolveMacros()
+    return mealObjectList
 
 ###################################################################################################
 #                                Driver                                                           # 
 ###################################################################################################
 if __name__ == '__main__':
-    #TODO [FEATURE] Support of Pre and Postworkout meals
 
-    # initialize
-    init()
-    logger.info("*** initialize ***\n")
+    logger.info("*** initialize ***")
+    initialize()
+
+    logger.info("*** Read yaml config files ***")
     mealDict, ingredientDict = readYamlFiles()
 
-    # create initial object list 
-    logger.info("*** create initial object list ***\n")
+    logger.info("*** create initial meal list ***")
     ingredientObjectListInit = generateIngredientObjectList(ingredientDict)
 
     mealObjectListInit = generateMealObjectList(mealDict, ingredientObjectListInit)
 
-    sys.exit(1)
 
-    # resolve object list 
-    logger.info("*** resolve object list  ***\n")
+    logger.info("*** calculate macro nutrition of each meal ***")
     mealObjectListResolved = resolveMealList(mealObjectListInit)
 
-    mealObjectFilteredList = mealObjectListResolved
-    if args.lowcarb:
-        mealObjectFilteredList = applyLowcarbFilter(mealObjectListResolved)
-
-    elif args.keto:
+    # filter
+    if args.keto:
+        logger.info("*** apply keto filter on meal list  ***")
         mealObjectFilteredList = applyKetoFilter(mealObjectListResolved)
+    elif args.lowcarb:
+        logger.info("*** apply lowcarb filter on meal list  ***")
+        mealObjectFilteredList = applyLowcarbFilter(mealObjectListResolved)
+    else:
+        mealObjectFilteredList = mealObjectListResolved
+
+
+    sys.exit(1)
 
     # create meal plan
     logger.info("*** create meal plan  ***\n")
