@@ -7,9 +7,12 @@
 #    result with every run.                                                                       #
 #                                                                                                 #
 #   Feature Ideas:                                                                                #  
-#                                                                                                 #  
-#                                                                                                 #  
-#                                                                                                 #            
+#       #TODO: [FEATURE] Create another yml parameter to tag breakfast/lunch/dinner               #  
+#       #TODO: [EVALUATE] Check if databases would fit better than yaml files                     #  
+#       #TODO: [FEATURE] Currently, only one variant of a meal is picked at random. The algorithm #
+#                        should pick the variant that fits the input parameters best.             #
+#       #TODO: [FEATURE] Some meals should not be in the same meal plan, e.g. two meals that use  #
+#                        a lot of eggs.                                                           #
 #    Author: Lukas                                                                                #
 #                                                                                                 #
 #    Contact: Github                                                                              #   
@@ -324,6 +327,8 @@ def chooseMeals(mealList):
     Randomly chooses meals from the given meal list until the target kcal count is reached. 
     The tolerated kcal deviation in both directions is 200 Kcal. The function tries to meet
     this requirement.
+    #TODO [FEATURE] Currently, the choosing function is pretty dump. Create some smarter
+    # algorithm that matches the target kcal better
     """
     mealListCopy = list(mealList)
     choosenMealList = []
@@ -358,6 +363,7 @@ def outputResults(choosenMealList, groceryObjectList):
     """
     Outputs the generated results
     #TODO [FEATURE] Create the option to print output to google docs instead of local file
+    #TODO [FEATURE] Using a logger to create the output file is hackish, write the file manually!
     """
     mealNames = [meal.name for meal in mealList]
     ingredientNameList = [ingredient.name for ingredient in groceryObjectList]
@@ -367,7 +373,7 @@ def outputResults(choosenMealList, groceryObjectList):
 
     resultLogger.info("Choosen meals: {}\n".format(mealNames))
     resultLogger.info("Grocery list: {}\n".format(groceryList))
-    return
+    resultLogger.info("Watchlist: {}".format(watchList))
 
 
 ###################################################################################################
