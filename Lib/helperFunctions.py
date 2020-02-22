@@ -227,3 +227,6 @@ def convertOptionsToIngredientList(optionsDict, IngredientObjectList):
 
 def getRandomOption(options):
     return random.choice(options)
+
+def improveChoosenMealList(mealList, choosenMealList):
+    return choosenMealList

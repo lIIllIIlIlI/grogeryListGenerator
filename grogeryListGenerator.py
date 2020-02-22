@@ -5,6 +5,10 @@
 #    Furthermore it will pick only low carb meals if the respective input argument is given.      #            
 #    To bring more variety, the script will try to pick meals at a random to generate differnt    #
 #    result with every run.                                                                       #
+#                                                                                                 #
+#   Feature Ideas:                                                                                #  
+#                                                                                                 #  
+#                                                                                                 #  
 #                                                                                                 #            
 #    Author: Lukas                                                                                #
 #                                                                                                 #
@@ -81,6 +85,7 @@ else:
 
 loggerName = Path(__file__).stem
 logger = getPrettyLogger(loggerName, logLevel, FILELOGGING.INACTIVE)
+resultLogger = getPrettyLogger("groceryList", LOGMODUS.VERBOSE, FILELOGGING.ACTIVE)
 
 
 ###################################################################################################
@@ -278,40 +283,10 @@ def lowCarbFilter(mealDict, mealingredientDict):
     logger.debug("lowCarbMealDict:\n{}\n\n".format(yaml.dump(lowCarbMealDict)))
     return lowCarbMealDict
 
-
-def chooseMeals(resolvedMealDict):
-    """
-    Picks a list of meals that fit the kcal requirements.
-    Currently, it will pick meals at random and stop once the kcal goal is reached.
-    TODO: Store results of last run and change probabilities of meals picked that run 
-    to support variety
-    TODO: Try to match the kcal goal as close as possible instead of simply adding items 
-    """
-    mealList = []
-
-    logger.debug("mealList:\n{}\n\n".format(yaml.dump(mealList)))
-    return mealList
-
-
-def generateGroceryList(mealList, mealDict): 
-    """
-    Generates and returns the final grocery list by looking up and adding the proper amount 
-    of every ingrdient for each chose meal.
-    """
-    tmpGroceryList = {}
-
-    logger.debug("Unresolved groceryList:\n{}\n\n".format(yaml.dump(tmpGroceryList)))
-    
-    logger.debug("groceryList:\n{}\n\n".format(yaml.dump(groceryList)))
-    return groceryList
-
-def outputResults(mealList):
-    """
-    Outputs the generated results
-    #TODO [FEATURE] Implement file output option
-    """
-    
-    return
+def resolveMealList(mealObjectList):
+    for meal in list(mealObjectList):
+        meal.resolveMacros()
+    return mealObjectList
 
 def applyLowcarbFilter(mealObjectList):
     """
@@ -344,11 +319,56 @@ def applyKetoFilter(mealObjectList):
     logger.info("Meals removed by lowcarb filter: \n{}".format(yaml.dump(filteredMealNames)))
     return ketoMealObjectList
 
+def chooseMeals(mealList):
+    """
+    Randomly chooses meals from the given meal list until the target kcal count is reached. 
+    The tolerated kcal deviation in both directions is 200 Kcal. The function tries to meet
+    this requirement.
+    """
+    mealListCopy = list(mealList)
+    choosenMealList = []
+    targetKcal = args.days * args.kcal
+    currentKcal = 0
 
-def resolveMealList(mealObjectList):
-    for meal in list(mealObjectList):
-        meal.resolveMacros()
-    return mealObjectList
+    while currentKcal > targetKcal - 200:
+        choosenMeal = random.choice(mealListCopy)
+        choosenMealList.append(choosenMeal)
+        currentKcal += choosenMeal.kcal
+        mealListCopy.remove(choosenMeal)
+        if not mealListCopy:
+            logger.error("Not enough meals specified to meet the given amounts of days and kcal without repetition")
+            sys.exit(1)
+    if currentKcal - targetKcal > 200:
+        choosenMealList = improveChoosenMealList(mealList, choosenMealList)
+
+    return choosenMealList
+
+def generateGroceryList(mealList): 
+    """
+    Generates and returns the final grocery list by looking up and adding the proper amount 
+    of every ingrdient for each chose meal.
+    #TODO [FEATURE] The grocery list currently contains duplicates. Merge those duplicates
+    """
+    groceryList = []
+    for meal in mealList:
+        groceryList.append(meal.ingredientList)
+    return groceryList
+
+def outputResults(choosenMealList, groceryObjectList):
+    """
+    Outputs the generated results
+    #TODO [FEATURE] Create the option to print output to google docs instead of local file
+    """
+    mealNames = [meal.name for meal in mealList]
+    ingredientNameList = [ingredient.name for ingredient in groceryObjectList]
+    amountList = [ingredient.amount for ingredient in groceryObjectList]
+
+    groceryList = zip(ingredientNameList, amountList)
+
+    resultLogger.info("Choosen meals: {}\n".format(mealNames))
+    resultLogger.info("Grocery list: {}\n".format(groceryList))
+    return
+
 
 ###################################################################################################
 #                                Driver                                                           # 
@@ -379,15 +399,12 @@ if __name__ == '__main__':
     else:
         mealObjectFilteredList = mealObjectListResolved
 
-    sys.exit(1)
-
-    # create meal plan
     logger.info("*** create meal plan  ***\n")
+    choosenMealList = chooseMeals(mealObjectFilteredList)    
 
-    mealList = chooseMeals(mealObjectFilteredList)    
+    logger.info("*** create grocery list ***\n")
+    groceryList = generateGroceryList(choosenMealList)
 
-    # Output results
-    logger.info("*** output results  ***\n")
-
-    outputResults(mealList)
+    logger.info("*** generate output ***\n")
+    outputResults(choosenMealList, groceryList)
 
