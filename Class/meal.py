@@ -1,4 +1,4 @@
-from ingredient import ingredient
+from Class.ingredient import ingredient
 
 import logging
 
