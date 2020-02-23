@@ -1,38 +1,46 @@
 'choosen meals:':
 - shake
 - shake
-- exampleMeal1
-- exampleMeal2
 - exampleMeal2
 - exampleMeal1
-- exampleMeal2
-- exampleMeal1
-- exampleMeal2
-- exampleMeal1
-- exampleMeal1
-- exampleMeal2
 - exampleMeal1
 - exampleMeal2
 - exampleMeal2
 - exampleMeal1
 - exampleMeal2
 - exampleMeal1
+- exampleMeal1
+- exampleMeal2
 - exampleMeal2
 - exampleMeal1
 - exampleMeal1
 - exampleMeal2
+- exampleMeal2
+- exampleMeal1
+- exampleMeal2
+- exampleMeal1
+- exampleMeal1
+- exampleMeal2
+- exampleMeal1
 - exampleMeal2
 - Reishuehnchen
 - Reishuehnchen
 'grocery list:':
   Banannen: 4
   Bratfett: 220
+  Butter: 220
   Haenchen: 400
+  Kaese: 110
   Lauch: 110
   Milch: 400
-  Nudeln: 4000
+  Nudeln: 4400
   Reis: 200
   Thymian: 22
-  Wacholder: 20
+  Wacholder: 22
   kartoffeln: 4400
-  krauter: 440
+'watch list:':
+- Limetten
+- lemonenSaft
+- Proteinpulver
+- Pfeffer
+- Salz

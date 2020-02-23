@@ -417,7 +417,13 @@ def outputResults(choosenMealList, groceryObjectList):
     resultsDict = {
         "choosen meals:": None,
         "grocery list:": {},
+        "watch list:": []
     }
+    watchList = []
+
+    for meal in choosenMealList:
+        if meal.watchList:
+            watchList.extend(meal.watchList)
 
     mealNames = [meal.name for meal in choosenMealList]
     ingredientNameList = [ingredient.name for ingredient in groceryObjectList]
@@ -429,6 +435,11 @@ def outputResults(choosenMealList, groceryObjectList):
             resultsDict['grocery list:'][ingredientName] += amount
         else:
             resultsDict['grocery list:'][ingredientName] = amount
+    
+    if watchList:
+        # delete duplicates
+        watchList = list(set(watchList))
+        resultsDict['watch list:'] = watchList
 
     with open(resultPath, 'w+') as fileDeskriptor:
         yaml.dump(resultsDict, fileDeskriptor, default_flow_style=False)
