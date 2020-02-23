@@ -1,4 +1,0 @@
-INFO   :: grogeryListGenerator.py :: outputResults   :: 368 :: Choosen meals: []
-
-INFO   :: grogeryListGenerator.py :: outputResults   :: 369 :: Grocery list: <zip object at 0x03E86EA8>
-

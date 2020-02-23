@@ -50,8 +50,8 @@ def getPrettyLogger(loggerName, LOGMODUS, FILELOGGING):
 
     # create logfile handler
     if FILELOGGING == FILELOGGING.ACTIVE:
-        logPath = Path(__file__).parent.parent / "Results"
-        logFileName = str(loggerName) + ".txt"
+        logPath = Path(__file__).parent / "Log"
+        logFileName = str(loggerName) + ".log"
         logFilePath = str(logPath / Path(logFileName))
         logFileHandler = logging.FileHandler(logFilePath, mode = 'w')
         logFileHandler.setLevel(logging.DEBUG)

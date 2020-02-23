@@ -8,7 +8,9 @@
 #                                                                                                 #
 #   Feature Ideas:                                                                                #  
 #       #TODO: [FEATURE] Create another yml parameter to tag breakfast/lunch/dinner               #  
-#       #TODO: [EVALUATE] Check if databases would fit better than yaml files                     #  
+#       #TODO: [EVALUATE] Check if databases would fit better than yaml files                     #
+#       #TODO: [FEATURE] Handle Post and Preworkout meals                                         #
+#       #TODO: [FEATURE] Handle cheat meals or external meals                                     #  
 #       #TODO: [FEATURE] Currently, only one variant of a meal is picked at random. The algorithm #
 #                        should pick the variant that fits the input parameters best.             #
 #       #TODO: [FEATURE] Some meals should not be in the same meal plan, e.g. two meals that use  #
@@ -33,6 +35,7 @@ import random
 from argparse import ArgumentParser
 from pathlib import Path
 from enum import Enum
+from operator import attrgetter
 
 from Lib.prettyLogger import getPrettyLogger
 from Lib.prettyLogger import LOGMODUS
@@ -88,7 +91,6 @@ else:
 
 loggerName = Path(__file__).stem
 logger = getPrettyLogger(loggerName, logLevel, FILELOGGING.INACTIVE)
-resultLogger = getPrettyLogger("groceryList", LOGMODUS.VERBOSE, FILELOGGING.ACTIVE)
 
 
 ###################################################################################################
@@ -100,6 +102,9 @@ mealDictFile = Path.cwd() / "Config" / "mealList.yaml"
 
 # Path to ingredient list yaml config file
 ingredientDictFile = Path.cwd() / "Config" / "ingredientList.yaml"
+
+# Path to generation results
+resultPath = Path.cwd() / "Results" / "groceryList.yaml"
 
 # List of ingredients extracted from yaml
 ingredientList = []
@@ -335,14 +340,14 @@ def chooseMeals(mealList):
     targetKcal = args.days * args.kcal
     currentKcal = 0
 
-    while currentKcal > targetKcal - 200:
+    while currentKcal < targetKcal - 200:
         choosenMeal = random.choice(mealListCopy)
-        choosenMealList.append(choosenMeal)
+        choosenMealList.append(copy.deepcopy(choosenMeal))
         currentKcal += choosenMeal.kcal
         mealListCopy.remove(choosenMeal)
         if not mealListCopy:
+            mealListCopy = list(mealList)
             logger.error("Not enough meals specified to meet the given amounts of days and kcal without repetition")
-            sys.exit(1)
     if currentKcal - targetKcal > 200:
         choosenMealList = improveChoosenMealList(mealList, choosenMealList)
 
@@ -356,7 +361,7 @@ def generateGroceryList(mealList):
     """
     groceryList = []
     for meal in mealList:
-        groceryList.append(meal.ingredientList)
+        groceryList.extend(meal.ingredientList)
     return groceryList
 
 def outputResults(choosenMealList, groceryObjectList):
@@ -365,15 +370,23 @@ def outputResults(choosenMealList, groceryObjectList):
     #TODO [FEATURE] Create the option to print output to google docs instead of local file
     #TODO [FEATURE] Using a logger to create the output file is hackish, write the file manually!
     """
-    mealNames = [meal.name for meal in mealList]
+    resultsDict = {
+        "choosen meals:": None,
+        "grocery list:": {},
+    }
+
+    mealNames = [meal.name for meal in choosenMealList]
     ingredientNameList = [ingredient.name for ingredient in groceryObjectList]
     amountList = [ingredient.amount for ingredient in groceryObjectList]
+    
+    resultsDict['choosen meals:'] = mealNames
+    for ingredientName, amount in zip(ingredientNameList, amountList):
+        resultsDict['grocery list:'][ingredientName] = amount
 
-    groceryList = zip(ingredientNameList, amountList)
+    with open(resultPath, 'w+') as fileDeskriptor:
+        yaml.dump(resultsDict, fileDeskriptor, default_flow_style=False)
 
-    resultLogger.info("Choosen meals: {}\n".format(mealNames))
-    resultLogger.info("Grocery list: {}\n".format(groceryList))
-    resultLogger.info("Watchlist: {}".format(watchList))
+    logger.info(yaml.dump(resultsDict))
 
 
 ###################################################################################################
@@ -405,12 +418,12 @@ if __name__ == '__main__':
     else:
         mealObjectFilteredList = mealObjectListResolved
 
-    logger.info("*** create meal plan  ***\n")
+    logger.info("*** create meal plan  ***")
     choosenMealList = chooseMeals(mealObjectFilteredList)    
 
-    logger.info("*** create grocery list ***\n")
+    logger.info("*** create grocery list ***")
     groceryList = generateGroceryList(choosenMealList)
 
-    logger.info("*** generate output ***\n")
+    logger.info("*** generate output ***")
     outputResults(choosenMealList, groceryList)
 
