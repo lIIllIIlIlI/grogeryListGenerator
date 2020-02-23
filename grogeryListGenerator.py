@@ -2,12 +2,10 @@
 #                                Description                                                      #
 #    Creates a grogery list from given meals and ingredience that will fit for given number of    #
 #    days. The script will find at least as much kalories as needed for the given number of days  #
-#    Furthermore it will pick only low carb meals if the respective input argument is given.      #            
-#    To bring more variety, the script will try to pick meals at a random to generate differnt    #
-#    result with every run.                                                                       #
+#    Furthermore it will pick only low carb or keto meals if the respective input argument is     #
+#    given. To bring more variety,                                                                #
 #                                                                                                 #
 #   Feature Ideas:                                                                                #  
-#       #TODO: [FEATURE] Create another yml parameter to tag breakfast/lunch/dinner               #  
 #       #TODO: [EVALUATE] Check if databases would fit better than yaml files                     #
 #       #TODO: [FEATURE] Handle Post and Preworkout meals                                         #
 #       #TODO: [FEATURE] Handle cheat meals or external meals                                     #  
@@ -15,9 +13,10 @@
 #                        should pick the variant that fits the input parameters best.             #
 #       #TODO: [FEATURE] Some meals should not be in the same meal plan, e.g. two meals that use  #
 #                        a lot of eggs.                                                           #
-#    Author: Lukas                                                                                #
 #                                                                                                 #
-#    Contact: Github                                                                              #   
+#    Author: Lukas H.                                                                                #
+#                                                                                                 #
+#    Contact: openberry+python@pm.me                                                              #   
 #                                                                                                 #
 ###################################################################################################
 
@@ -103,6 +102,15 @@ mealDictFile = Path.cwd() / "Config" / "mealList.yaml"
 # Path to ingredient list yaml config file
 ingredientDictFile = Path.cwd() / "Config" / "ingredientList.yaml"
 
+# Path to meal list yaml config file
+preWorkoutDictFile = Path.cwd() / "Config" / "preWorkout.yaml"
+
+# Path to ingredient list yaml config file
+postWorkoutDictFile = Path.cwd() / "Config" / "postWorkout.yaml"
+
+# list of all input config files
+configFiles = [mealDictFile, ingredientDictFile, preWorkoutDictFile, postWorkoutDictFile]
+
 # Path to generation results
 resultPath = Path.cwd() / "Results" / "groceryList.yaml"
 
@@ -146,7 +154,7 @@ def initialize():
     """ 
     checkInputArgs(args)
     checkPythonVersion()
-    checkConfigFileExist(mealDictFile, ingredientDictFile)
+    checkConfigFileExist(configFiles)
     registerLoggers(logger)
 
 
@@ -190,15 +198,41 @@ def readYamlFiles():
         try:
             ingredientDict = yaml.safe_load(stream)
         except yaml.YAMLError as exc:
-            logger.error("*** ingredient list is invalid. Reading the file gives the following error: \
+            logger.error("*** ingredient yaml is invalid. Reading the file gives the following error: \
                           {}. Exiting ...".format(exc))
+            sys.exit(1)
 
     with open(mealDictFile, 'r') as stream:
         try:
             mealDict = yaml.safe_load(stream)
         except yaml.YAMLError as exc:
-            logger.error("*** Meal list is invalid. Reading the file gives the following error: \
+            logger.error("*** Meal yaml is invalid. Reading the file gives the following error: \
                           {}. Exiting ...".format(exc))
+            sys.exit(1)
+
+    with open(preWorkoutDictFile, 'r') as stream:
+        try:
+            preWorkoutMealDict = yaml.safe_load(stream)
+        except yaml.YAMLError as exc:
+            logger.error("*** Preworkout yaml is invalid. Reading the file gives the following error: \
+                          {}. Exiting ...".format(exc))
+            sys.exit(1)
+
+    with open(postWorkoutDictFile, 'r') as stream:
+        try:
+            postWorkoutMealDict = yaml.safe_load(stream)
+        except yaml.YAMLError as exc:
+            logger.error("*** postWorkout yaml is invalid. Reading the file gives the following error: \
+                          {}. Exiting ...".format(exc))
+            sys.exit(1)
+
+    # add pre and postworkout tags in meals to extract them later on
+    taggedPostWorkoutMealDict, taggedPreWorkoutMealDict = tagWorkoutMeals(postWorkoutMealDict, preWorkoutMealDict)
+
+    # add the tagged pre and postworkout meals to the regular meal list
+    mealDict.update(taggedPostWorkoutMealDict)
+    mealDict.update(taggedPreWorkoutMealDict)
+    logger.info(yaml.dump(mealDict))
 
     return mealDict, ingredientDict
 
@@ -280,17 +314,6 @@ def generateIngredientObjectList(ingredientDict):
     return ingredientObjectListInit
 
 
-def lowCarbFilter(mealDict, mealingredientDict):
-    """
-    Function filters every meal that has more than 50g of carbs for every 1000 Kcal
-    """
-    # for meal in mealList:
-       # for ingredience 
-    lowCarbMealDict = {}
-
-    logger.debug("lowCarbMealDict:\n{}\n\n".format(yaml.dump(lowCarbMealDict)))
-    return lowCarbMealDict
-
 def resolveMealList(mealObjectList):
     for meal in list(mealObjectList):
         meal.resolveMacros()
@@ -327,19 +350,31 @@ def applyKetoFilter(mealObjectList):
     logger.info("Meals removed by lowcarb filter: \n{}".format(yaml.dump(filteredMealNames)))
     return ketoMealObjectList
 
+
 def chooseMeals(mealList):
     """
     Randomly chooses meals from the given meal list until the target kcal count is reached. 
     The tolerated kcal deviation in both directions is 200 Kcal. The function tries to meet
     this requirement.
     #TODO [FEATURE] Currently, the choosing function is pretty dump. Create some smarter
-    # algorithm that matches the target kcal better
+                    algorithm that matches the target kcal better
+    #TODO [MNT] This function does too much at once and is pretty dirty overall. Refactor!
     """
+    postWorkoutMealList, preWorkoutMealList, mealList = separateMeals(mealList)
+
     mealListCopy = list(mealList)
     choosenMealList = []
     targetKcal = args.days * args.kcal
     currentKcal = 0
+    mealsDuplicated = False
 
+    # add post workout meals
+    for i in range(args.workout):
+        chooseMeal = random.choice(postWorkoutMealList)
+        currentKcal += chooseMeal.kcal
+        choosenMealList.append(chooseMeal)
+
+    # add meals until target kcal is reached
     while currentKcal < targetKcal - 200:
         choosenMeal = random.choice(mealListCopy)
         choosenMealList.append(copy.deepcopy(choosenMeal))
@@ -347,11 +382,20 @@ def chooseMeals(mealList):
         mealListCopy.remove(choosenMeal)
         if not mealListCopy:
             mealListCopy = list(mealList)
-            logger.error("Not enough meals specified to meet the given amounts of days and kcal without repetition")
+            mealsDuplicated = True
     if currentKcal - targetKcal > 200:
         choosenMealList = improveChoosenMealList(mealList, choosenMealList)
 
+    if mealsDuplicated:
+        logger.error("Not enough meals specified to meet the given amounts of days and kcal without repetition")
+
+    # add pre workout meals
+    for i in range(args.workout):
+        chooseMeal = random.choice(preWorkoutMealList)
+        choosenMealList.append(chooseMeal)
+
     return choosenMealList
+
 
 def generateGroceryList(mealList): 
     """
@@ -364,11 +408,11 @@ def generateGroceryList(mealList):
         groceryList.extend(meal.ingredientList)
     return groceryList
 
+
 def outputResults(choosenMealList, groceryObjectList):
     """
     Outputs the generated results
     #TODO [FEATURE] Create the option to print output to google docs instead of local file
-    #TODO [FEATURE] Using a logger to create the output file is hackish, write the file manually!
     """
     resultsDict = {
         "choosen meals:": None,
@@ -381,7 +425,10 @@ def outputResults(choosenMealList, groceryObjectList):
     
     resultsDict['choosen meals:'] = mealNames
     for ingredientName, amount in zip(ingredientNameList, amountList):
-        resultsDict['grocery list:'][ingredientName] = amount
+        if ingredientName in resultsDict['grocery list:']:
+            resultsDict['grocery list:'][ingredientName] += amount
+        else:
+            resultsDict['grocery list:'][ingredientName] = amount
 
     with open(resultPath, 'w+') as fileDeskriptor:
         yaml.dump(resultsDict, fileDeskriptor, default_flow_style=False)
@@ -404,7 +451,6 @@ if __name__ == '__main__':
     ingredientObjectListInit = generateIngredientObjectList(ingredientDict)
 
     mealObjectListInit = generateMealObjectList(mealDict, ingredientObjectListInit)
-
 
     logger.info("*** calculate macro nutrition of each meal ***")
     mealObjectListResolved = resolveMealList(mealObjectListInit)

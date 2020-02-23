@@ -1,3 +1,27 @@
+Banannen:
+  carbs: 22.8
+  fat: 0.3
+  protein: 1.1
+  kcal: 105
+
+Milch:
+  carbs: 4.9
+  fat: 1.5
+  protein: 3.4
+  kcal: 47
+
+Haenchen:
+  carbs: 0
+  fat: 2
+  protein: 23
+  kcal: 110
+
+Reis:
+  carbs: 77.7
+  fat: 0.6
+  protein: 6.8
+  kcal: 349
+
 exampleIngredience1:
   carbs: 10
   fat: 0

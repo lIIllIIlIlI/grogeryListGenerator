@@ -22,12 +22,11 @@ def registerLoggers(logger):
     registerIngredientLogger(logger)
     registerHelperFunctionsLogger(logger)
 
-def checkConfigFileExist(mealDictFile, ingredientDictFile):
-    if not mealDictFile or not ingredientDictFile:
-        logger.error("Could not find yaml config files. Make sure mealList.yaml exists here ({}) \
-                      and ingredientList here: ({}). yaml exist. Exiting ...".format(Path(mealDictFile), \
-                      Path(ingredientDictFile)))
-        sys.exit(1)     
+def checkConfigFileExist(configFiles):
+    for configFile in configFiles:
+        if not configFile:
+            logger.error("Config file {} is missing. Exiting ...".format(configFile))
+            sys.exit(1)     
 
 def checkInputArgs(args):
     if args.lowcarb and args.keto:
@@ -82,6 +81,20 @@ def convertMealToObject(mealName, mealData, IngredientObjectList):
     else:
         watchList = ""
 
+    # catch and handle pre workout tag
+    if "postWorkout" in mealData:
+        postWorkout = True        
+        del mealData['postWorkout']
+    else:
+        postWorkout = False
+
+    # catch and handle post workout tag
+    if "preWorkout" in mealData:
+        preWorkout = True        
+        del mealData['preWorkout']
+    else:
+        preWorkout = False
+
     # catch and handle everything else which should only be ingrdients
     for ingredient in mealData.keys():
         ingredientObject = getIngredientObject(IngredientObjectList, ingredient)
@@ -93,7 +106,7 @@ def convertMealToObject(mealName, mealData, IngredientObjectList):
             resolveStatus = False
 
     if resolveStatus:
-        mealObject = meal(mealName, watchList, options, ingredientList)
+        mealObject = meal(mealName, watchList, options, postWorkout, preWorkout, ingredientList)
 
     return mealObject
 
@@ -169,26 +182,33 @@ def isIngredientDataValid(kcal, carbs, protein, fat, metric, ingredientName):
         isIngredientValid = False
 
     if not isinstance(kcal, int):
-        if not kcal.isdigit(): 
+        if not is_number(kcal): 
             isIngredientValid = False
             logger.warning('The value "{}" of Ingredient {} contains invalid characters. Ingredient will be ignored'.format(kcal, ingredientName))
 
     if not isinstance(carbs, int):
-        if not carbs.isdigit(): 
+        if not is_number(carbs): 
             isIngredientValid = False
             logger.warning('The value "{}" of Ingredient {} contains invalid characters. Ingredient will be ignored'.format(carbs, ingredientName))
 
     if not isinstance(fat, int):
-        if not fat.isdigit(): 
+        if not is_number(fat): 
             isIngredientValid = False
             logger.warning('The value "{}" of Ingredient {} contains invalid characters. Ingredient will be ignored'.format(fat, ingredientName))
 
     if not isinstance(protein, int):
-        if not protein.isdigit(): 
+        if not is_number(protein): 
             isIngredientValid = False
             logger.warning('The value "{}" of Ingredient {} contains invalid characters. Ingredient will be ignored'.format(protein, ingredientName))
 
     return isIngredientValid
+
+def is_number(s):
+    try:
+        float(s)
+        return True
+    except ValueError:
+        return False
 
 def convertOptionsToIngredientList(optionsDict, IngredientObjectList):
     """
@@ -224,6 +244,33 @@ def convertOptionsToIngredientList(optionsDict, IngredientObjectList):
             option = []
             break
     return option
+
+def tagWorkoutMeals(postWorkoutMealDict, preWorkoutMealDict):
+    """
+    """
+    for postWorkoutMeal in postWorkoutMealDict:
+        postWorkoutMealDict[postWorkoutMeal]["postWorkout"] = True
+    for preWorkoutMeal in preWorkoutMealDict:
+        preWorkoutMealDict[preWorkoutMeal]["preWorkout"] = True
+    return postWorkoutMealDict, preWorkoutMealDict
+
+def separateMeals(mealList):
+    """
+    Separates the given mealList in pre workout, post workout and regular meals.
+    """
+    postWorkoutMealList = []
+    preWorkoutMealList = []
+    regularMealList = [] 
+
+    for meal in mealList:
+        if meal.postWorkout:
+            postWorkoutMealList.append(meal)
+        elif meal.preWorkout:
+            preWorkoutMealList.append(meal)
+        else:
+            regularMealList.append(meal)
+            
+    return postWorkoutMealList, preWorkoutMealList, regularMealList
 
 def getRandomOption(options):
     return random.choice(options)

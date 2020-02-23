@@ -32,14 +32,20 @@ def registerMealLogger(Logger):
 #
 #       fat - overall fat count of the meal
 #
+#       postWorkout - indicator for meals that are only suitable for post workout
+#
+#       preWorkout - indicator for meals that are only suitable for pre workout
+#
 # -------------------------------------------------------------------------------------------------
 
 class meal:
-    def __init__(self, name, watchList, options, ingredientList = []):
+    def __init__(self, name, watchList, options, postWorkout, preWorkout, ingredientList = []):
         self.name = name
         self.watchList = watchList
         self.options = options
         self.ingredientList = ingredientList
+        self.postWorkout = postWorkout
+        self.preWorkout = preWorkout
         self.kcal = 0
         self.carb = 0
         self.protein = 0

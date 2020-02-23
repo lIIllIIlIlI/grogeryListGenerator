@@ -22,7 +22,9 @@
                 "3200",
                 "--days",
                 "3",
-                "--verbose"
+                "--verbose",
+                "--workout",
+                "2"
             ],
             "problemMatcher": [
                 "$go"
