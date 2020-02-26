@@ -36,52 +36,47 @@ Himbeerquark:
   - Xucker
   - Süßstoff
   
-  
-  
-Herzhafte Waffeln
+Herzhafte Waffeln:
+   Zwiebeln: 1
+   Ruccola: 150
+   Mais: 1
+   Eier: 4
+   Mehl: 200
+   Backpulver: 1
+   Tomaten: 3
+   Frühlingszwiebeln: 100
+   Creme Fraiche light: 200
+   options:
+   - Speck: 100
+   - Lachs: 100
+   watchList:
+   - Zitronensaft
 
-- 1 Große Zwiebel
-
-- Ruccola
-
-- Dose Mais
-
-- 4 Eier
-
-- 200g Mehl
-
-- Backpulver
-
-- Tomaten
-
-- Frühlingszwiebeln
-
-- Creme Fraiche light
-
-- Speck oder Lachs
-
-
-
+# Bemerkung: mehr Zitronensaft wagen
 Grüner shake:
-- Zitronensaft
-- Minze
-- Basilikum
-- Rucola/frischer Spinat,Feldsalat/Sauerampfer
+  Basilikum
+  Minze
+  options:
+  - Rucola
+  - Spinat frisch 
+  - Feldsalat 
+  - Sauerampfer
+  scoop vanille: 1
+  Chiasamen
+  Magerquark: 250
+  Sprudelwasser: 100
+  options:
+  - Kiwi
+  - Apfel
+  options:
+  - kokosnusmilch 
+  - avocado
+   watchList:
+   - Zitronensaft
+   - ingwer 
+   - Süßstoff
+   - matchapulver optional
 
-- 1 scoop Vanilleprotein
-- Chiasamen
-
-- 250g quark
-
-- Sprudelwasser
-- ingwer
-- Kiwi oder Apfel
-- Süßstoff, ggf mit vanilleflavour
-- kokosnusmilch oder avocado
-- matchapulver optional
-- eis
-
-Bemerkung: mehr Zitronensaft wagen
 
 lowcarb brot:
 Lowcarb Mehl	150
