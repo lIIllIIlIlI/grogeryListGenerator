@@ -5,16 +5,7 @@
 #    Furthermore it will pick only low carb or keto meals if the respective input argument is     #
 #    given. To bring more variety,                                                                #
 #                                                                                                 #
-#   Feature Ideas:                                                                                #  
-#       #TODO: [EVALUATE] Check if databases would fit better than yaml files                     #
-#       #TODO: [FEATURE] Handle Post and Preworkout meals                                         #
-#       #TODO: [FEATURE] Handle cheat meals or external meals                                     #  
-#       #TODO: [FEATURE] Currently, only one variant of a meal is picked at random. The algorithm #
-#                        should pick the variant that fits the input parameters best.             #
-#       #TODO: [FEATURE] Some meals should not be in the same meal plan, e.g. two meals that use  #
-#                        a lot of eggs.                                                           #
-#                                                                                                 #
-#    Author: Lukas H.                                                                                #
+#    Author: Lukas H.                                                                             #
 #                                                                                                 #
 #    Contact: openberry+python@pm.me                                                              #   
 #                                                                                                 #
