@@ -7,9 +7,9 @@
 # Zitronen über alle kippen
 
 Himbeerquark:
-  Magerquark: 750
+  Quark light: 750
   Milch light: 100
-  Halbfettsahne: 250
+  Sahne halbfett: 250
   Himbeeren: 250
   Chiasamen: 50
   watchList:
@@ -25,17 +25,17 @@ Grüner shake:
     - Sauerampfer: 50
   - - Kiwi: 1
     - Apfel: 1
-  - - kokosnusmilch: 250
-    - avocado: 1
+  - - Kokosnusmilch: 250
+    - Avocado: 1
   Proteinpulver: 1
   Chiasamen: 30
-  Magerquark: 250
+  Quark light: 250
   Sprudelwasser: 100
   watchList:
    - Zitronensaft
-   - ingwer 
+   - Ingwer 
    - Süßstoff
-   - matchapulver optional
+   - Matchapulver 
    - Basilikum
    - Minze
    
@@ -53,13 +53,13 @@ lowcarb brot:
     - Butter
 
 Quinoa salat:
-    quinoa: 60 
+    Quinoa: 60 
     Feldsalat: 100 
     Tomaten: 100 
     Apfel: 1
-    mandeln: 50 
-    granatapfel: 0.5 
-    granatapfelsaft:	80 
+    Mandeln: 50 
+    Granatapfel: 0.5 
+    Granatapfelsaft:	80 
     Joghurt: 100
     Rotweinessig:	1
 
@@ -83,11 +83,11 @@ Waffeln herzhaft:
 Waffeln süß lowcarb:
     Eier:	6
     Milch:	400
-    Low carb Mehl:	10
+    Lowcarb Mehl:	10
     Backpulver:	1 
     Proteinpulver: 2
     options:
-      - Ergbeeren: 200
+      - Erdbeeren: 200
       - Blaubeeren: 200
 
 Muffins herzhaft lowcarb:
