@@ -6,26 +6,6 @@
 # Sonstiges:
 # Zitronen über alle kippen
 
-exampleMeal1:
-  Wacholder: 2
-  Nudeln: 400
-  watchList:
-  - lemonenSaft
-
-exampleMeal2:
-  Bratfett: 20
-  # Put in differnt options like this
-  options:
-  - krauter: 40
-  - Butter: 20
-    Kaese: 10
-  Lauch: 10
-  Thymian: 2
-  kartoffeln: 400
-  watchList: 
-  - Salz
-  - Pfeffer
-  
 Himbeerquark:
   Magerquark: 750
   Milch light: 100
@@ -35,8 +15,55 @@ Himbeerquark:
   watchList:
   - Xucker
   - Süßstoff
-  
-Herzhafte Waffeln:
+
+# Bemerkung: mehr Zitronensaft wagen
+Grüner shake:
+  Basilikum
+  Minze
+  options:
+  - - Rucola
+    - Spinat frisch 
+    - Feldsalat 
+    - Sauerampfer
+  - - Kiwi
+    - Apfel
+  - - kokosnusmilch
+    - avocado
+  scoop vanille: 1
+  Chiasamen
+  Magerquark: 250
+  Sprudelwasser: 100
+  watchList:
+   - Zitronensaft
+   - ingwer 
+   - Süßstoff
+   - matchapulver optional
+
+# Ofen vorheizen	
+lowcarb brot:
+    Lowcarb Mehl:	150
+    Magerquark: 500
+    Kermix: 150
+    Mandeln: 100
+    Eier: 3
+    Chia Samen: 50
+    Schinken: 100
+    Antipasti: 100
+    watchList:
+    - Butter
+
+Quinoa salat:
+    quinoa: 60 
+    Feldsalat: 100 
+    Tomaten: 100 
+    Apfel: 1
+    mandeln: 50 
+    granatapfel: 0.5 
+    granatapfelsaft:	80 
+    Joghurt: 100
+    Rotweinessig:	1
+
+Waffeln herzhaft:
    Zwiebeln: 1
    Ruccola: 150
    Mais: 1
@@ -52,86 +79,34 @@ Herzhafte Waffeln:
    watchList:
    - Zitronensaft
 
-# Bemerkung: mehr Zitronensaft wagen
-Grüner shake:
-  Basilikum
-  Minze
-  options:
-  - Rucola
-  - Spinat frisch 
-  - Feldsalat 
-  - Sauerampfer
-  scoop vanille: 1
-  Chiasamen
-  Magerquark: 250
-  Sprudelwasser: 100
-  options:
-  - Kiwi
-  - Apfel
-  options:
-  - kokosnusmilch 
-  - avocado
-   watchList:
-   - Zitronensaft
-   - ingwer 
-   - Süßstoff
-   - matchapulver optional
+# Süßen mit vanille flavour drops
+Waffeln süß lowcarb:
+    Eier:	6
+    Milch:	400
+    Low carb Mehl:	10
+    Backpulver:	1 
+    Proteinpulver: 2
+    options:
+      - Ergbeeren: 200
+      - Blaubeeren: 200
+
+Muffins herzhaft lowcarb:
+    Eier:	7
+    options:
+        - - Ruccola: 50
+          - Basilikum: 50
+        - - Tomaten: 3
+          - Pilze: 3
+
+# Süßen mit vanille flavour drops
+Muffins süß lowcarb:
+    Eier: 7
+    Proteinpulver: 1
+    Lowcarb Mehl: 50
+    options:
+        - Erdbeeren: 100
+        - Blaubeeren: 100
 
 
-lowcarb brot:
-Lowcarb Mehl	150
-Magerquark	500
-Kermix	150
-Mandeln, gemahlen	100
-Eier	3
-Chia Samen 	50
-Butter, Schinken, Antipast	
-
-Bemerkung: Ofen vorheizen	
-
-Quinoa salat:
-quinoa	60g 
-Feldsalat	100g 
-Tomaten	100g 
-Apfel	1
-mandeln	50g 
-granatapfel	1/2 
-granatapfelsaft	80g 
-Joghurt	100h
-Rotweinessig	1 El
-Salz, Pfeffer	
-
-Erbbeerwaffeln:
-Eier	3
-Milch	200ml
-Low carb Mehl	25g
-Backpulver	1 Päckchen
-Proteinpulver Vanille	1 scoop
-Vanille flavour drops	2 spritzer
-Erdbeeren	100g
-
-Erbbeermuffins:
-Eier	7
-Vanilla Proteinpulver	1 scoop
-Erdbeeren	100g
-Salz	
-Vanilla Flavour Drops	
-Lowcarb Mehl	50g
-
-Blaubeermuffins:
-Eier	7
-Whey Schokolade	1 scoop
-Blaubeeren	100g
-Salz	 
-Süßstoff	
-Lowcarb Mehl	50g
-
-
-Eier Muffins herzhaft:
-Eier	7
-Ruccola|Basilikum	50g
-Tomaten|Pilze	3
-Salz	
-Gewürze	
 
 
