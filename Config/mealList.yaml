@@ -18,19 +18,17 @@ Himbeerquark:
 
 # Bemerkung: mehr Zitronensaft wagen
 Grüner shake:
-  Basilikum
-  Minze
   options:
-  - - Rucola
-    - Spinat frisch 
-    - Feldsalat 
-    - Sauerampfer
-  - - Kiwi
-    - Apfel
-  - - kokosnusmilch
-    - avocado
+  - - Ruccola: 50
+    - Spinat frisch: 50 
+    - Feldsalat: 50 
+    - Sauerampfer: 50
+  - - Kiwi: 1
+    - Apfel: 1
+  - - kokosnusmilch: 250
+    - avocado: 1
   scoop vanille: 1
-  Chiasamen
+  Chiasamen: 30
   Magerquark: 250
   Sprudelwasser: 100
   watchList:
@@ -38,7 +36,9 @@ Grüner shake:
    - ingwer 
    - Süßstoff
    - matchapulver optional
-
+   - Basilikum
+   - Minze
+   
 # Ofen vorheizen	
 lowcarb brot:
     Lowcarb Mehl:	150
