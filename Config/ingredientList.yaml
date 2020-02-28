@@ -153,62 +153,61 @@ Sprudelwasser:
   fat: 0
   protein: 0
   kcal: 0
- 
-# RESOLVED TO THIS POINT
-  
+   
 Kernmix:
-  carbs: 77.7
-  fat: 0.6
-  protein: 6.8
-  kcal: 349
+  carbs: 16
+  fat: 43
+  protein: 27
+  kcal: 541 
   
 Mandeln:
-  carbs: 77.7
-  fat: 0.6
-  protein: 6.8
-  kcal: 349
+  carbs: 4.5
+  fat: 55
+  protein: 29.1
+  kcal: 612
   
 Schinken:
-  carbs: 77.7
-  fat: 0.6
-  protein: 6.8
-  kcal: 349
+  carbs: 0.9
+  fat: 14
+  protein: 14.8
+  kcal: 187
   
 Antipasti:
-  carbs: 77.7
-  fat: 0.6
-  protein: 6.8
-  kcal: 349
+  carbs: 13
+  fat: 13
+  protein: 2
+  kcal: 176
   
 Quinoa:
-  carbs: 77.7
-  fat: 0.6
-  protein: 6.8
-  kcal: 349
+  carbs: 62
+  fat: 5.9
+  protein: 12
+  kcal: 363
   
 Granatapfel:
-  carbs: 77.7
-  fat: 0.6
-  protein: 6.8
-  kcal: 349
-  
-Granatapfelsaft:
-  carbs: 77.7
-  fat: 0.6
-  protein: 6.8
-  kcal: 349
+  carbs: 25.9
+  fat: 0.9
+  protein: 1.1
+  kcal: 124
   
 Joghurt:
-  carbs: 77.7
-  fat: 0.6
-  protein: 6.8
-  kcal: 349
+  carbs: 4.7
+  fat: 3.8
+  protein: 5
+  kcal: 75
   
 Rotweinessig:
-  carbs: 77.7
-  fat: 0.6
-  protein: 6.8
-  kcal: 349
+  carbs: 0
+  fat: 0
+  protein: 0
+  kcal: 4
+  
+# Resolved to this point
+Skyr:
+  carbs: 4.7
+  fat: 3.8
+  protein: 5
+  kcal: 75
   
 Mais:
   carbs: 77.7
