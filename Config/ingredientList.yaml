@@ -130,54 +130,31 @@ Apfel:
   protein: 0.4
   kcal: 70
   
-# RESOLVED TO THIS POINT
 Kokosnusmilch:
-  carbs: 77.7
-  fat: 0.6
-  protein: 6.8
-  kcal: 349
+  carbs: 3
+  fat: 21
+  protein: 2.2
+  kcal: 216
   
 Avocado:
-  carbs: 77.7
-  fat: 0.6
-  protein: 6.8
-  kcal: 349
+  carbs: 1
+  fat: 58.7
+  protein: 4.7
+  kcal: 552
   
 Proteinpulver:
-  carbs: 77.7
-  fat: 0.6
-  protein: 6.8
-  kcal: 349
-  
-Chiasamen:
-  carbs: 77.7
-  fat: 0.6
-  protein: 6.8
-  kcal: 349
-  
-Quark light:
-  carbs: 77.7
-  fat: 0.6
-  protein: 6.8
-  kcal: 349
-  
-Quark halbfett:
-  carbs: 77.7
-  fat: 0.6
-  protein: 6.8
-  kcal: 349
-  
-Quark fett:
-  carbs: 77.7
-  fat: 0.6
-  protein: 6.8
-  kcal: 349
+  carbs: 1.0
+  fat: 1.9
+  protein: 21
+  kcal: 103
   
 Sprudelwasser:
-  carbs: 77.7
-  fat: 0.6
-  protein: 6.8
-  kcal: 349
+  carbs: 0
+  fat: 0
+  protein: 0
+  kcal: 0
+ 
+# RESOLVED TO THIS POINT
   
 Kernmix:
   carbs: 77.7
