@@ -23,97 +23,297 @@ Reis:
   kcal: 349
 
 Zwiebeln:
-
+  carbs: 4.9 
+  fat: 0.2
+  protein: 1.2
+  kcal: 28 
+  
 Ruccola:
-
+  carbs: 2.2
+  fat: 0.8
+  protein: 2.6
+  kcal: 24
+  
 Quark mager:
-
+  carbs: 4
+  fat: 0.3
+  protein: 12
+  kcal: 68
+  
 Quark halbfett:
-
+  carbs: 3.6
+  fat: 5.1
+  protein: 12.5
+  kcal: 97
+  
 Quark fett:
-
+  carbs: 3.2
+  fat: 10
+  protein: 9
+  kcal: 139
+  
 Milch light:
-
+  carbs: 4.9
+  fat: 1.5
+  protein: 3.4
+  kcal: 47
+   
+Sahne mager:
+  carbs: 4.5
+  fat: 7
+  protein: 1
+  kcal: 90
+  
 Sahne halbfett:
+  carbs: 4
+  fat: 15
+  protein: 2
+  kcal: 160
 
+Sahne Fett:
+  carbs: 3.2
+  fat: 30
+  protein: 2.4
+  kcal: 292
+  
 Himbeeren:
-
+  carbs: 7
+  fat: 0.5
+  protein: 1.2
+  kcal: 50
+  
 Chiasamen:
-
+  carbs: 8
+  fat: 31.1
+  protein: 17
+  kcal: 486
+  
 Basilikum:
-
+  carbs: 5.1
+  fat: 0.8
+  protein: 3.1 
+  kcal: 41 
+ 
 Minze:
-
+  carbs: 5.3
+  fat: 0.7
+  protein: 3.8
+  kcal: 44
+  
 Spinat frisch:
-
+  carbs: 1.4
+  fat: 0.4
+  protein: 2.9
+  kcal: 23
+  
 Feldsalat:
-
+  carbs: 0.7
+  fat: 0.4
+  protein: 1.8
+  kcal: 18
+  
 Sauerampfer:
-
+  carbs: 1.6
+  fat: 0.4
+  protein: 2.3
+  kcal: 22
+  
 Kiwi:
-
+  carbs: 9
+  fat: 0.6
+  protein: 1
+  kcal: 62
+  
 Apfel:
-
+  carbs: 18.7
+  fat: 0.1
+  protein: 0.4
+  kcal: 70
+  
+# RESOLVED TO THIS POINT
 Kokosnusmilch:
-
+  carbs: 77.7
+  fat: 0.6
+  protein: 6.8
+  kcal: 349
+  
 Avocado:
-
+  carbs: 77.7
+  fat: 0.6
+  protein: 6.8
+  kcal: 349
+  
 Proteinpulver:
-
+  carbs: 77.7
+  fat: 0.6
+  protein: 6.8
+  kcal: 349
+  
 Chiasamen:
-
+  carbs: 77.7
+  fat: 0.6
+  protein: 6.8
+  kcal: 349
+  
 Quark light:
-
+  carbs: 77.7
+  fat: 0.6
+  protein: 6.8
+  kcal: 349
+  
 Quark halbfett:
-
+  carbs: 77.7
+  fat: 0.6
+  protein: 6.8
+  kcal: 349
+  
 Quark fett:
-
+  carbs: 77.7
+  fat: 0.6
+  protein: 6.8
+  kcal: 349
+  
 Sprudelwasser:
-
+  carbs: 77.7
+  fat: 0.6
+  protein: 6.8
+  kcal: 349
+  
 Kernmix:
-
+  carbs: 77.7
+  fat: 0.6
+  protein: 6.8
+  kcal: 349
+  
 Mandeln:
-
+  carbs: 77.7
+  fat: 0.6
+  protein: 6.8
+  kcal: 349
+  
 Schinken:
-
+  carbs: 77.7
+  fat: 0.6
+  protein: 6.8
+  kcal: 349
+  
 Antipasti:
-
+  carbs: 77.7
+  fat: 0.6
+  protein: 6.8
+  kcal: 349
+  
 Quinoa:
-
+  carbs: 77.7
+  fat: 0.6
+  protein: 6.8
+  kcal: 349
+  
 Granatapfel:
-
+  carbs: 77.7
+  fat: 0.6
+  protein: 6.8
+  kcal: 349
+  
 Granatapfelsaft:
-
+  carbs: 77.7
+  fat: 0.6
+  protein: 6.8
+  kcal: 349
+  
 Joghurt:
-
+  carbs: 77.7
+  fat: 0.6
+  protein: 6.8
+  kcal: 349
+  
 Rotweinessig:
-
+  carbs: 77.7
+  fat: 0.6
+  protein: 6.8
+  kcal: 349
+  
 Mais:
-
+  carbs: 77.7
+  fat: 0.6
+  protein: 6.8
+  kcal: 349
+  
 Backpulver:
-
+  carbs: 77.7
+  fat: 0.6
+  protein: 6.8
+  kcal: 349
+  
 Frühlingszwiebeln:
-
+  carbs: 77.7
+  fat: 0.6
+  protein: 6.8
+  kcal: 349
+  
 Creme Fraiche light:
-
+  carbs: 77.7
+  fat: 0.6
+  protein: 6.8
+  kcal: 349
+  
 Speck:
-
+  carbs: 77.7
+  fat: 0.6
+  protein: 6.8
+  kcal: 349
+  
 Lachs:
-
+  carbs: 77.7
+  fat: 0.6
+  protein: 6.8
+  kcal: 349
+  
 Zitronensaft:
-
+  carbs: 77.7
+  fat: 0.6
+  protein: 6.8
+  kcal: 349
+  
 Matchapulver:
-
+  carbs: 77.7
+  fat: 0.6
+  protein: 6.8
+  kcal: 349
+  
 Basilikum:
-
+  carbs: 77.7
+  fat: 0.6
+  protein: 6.8
+  kcal: 349
+  
 Minze:
-
+  carbs: 77.7
+  fat: 0.6
+  protein: 6.8
+  kcal: 349
+  
 Lowcarb Mehl:
-
+  carbs: 77.7
+  fat: 0.6
+  protein: 6.8
+  kcal: 349
+  
 Erdbeeren:
-
+  carbs: 77.7
+  fat: 0.6
+  protein: 6.8
+  kcal: 349
+  
 Blaubeeren:
-
+  carbs: 77.7
+  fat: 0.6
+  protein: 6.8
+  kcal: 349
+  
 Pilze:
-
+  carbs: 77.7
+  fat: 0.6
+  protein: 6.8
+  kcal: 349
 
