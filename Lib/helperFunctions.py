@@ -133,15 +133,9 @@ def convertIngredientToObject(ingredientName, ingredientData):
     fat = getValueFromDictionary(ingredientData, ingredientName, "fat")
     protein = getValueFromDictionary(ingredientData, ingredientName, "protein")
 
-    # extract metric, use default if not existing
-    if 'metric' in ingredientData:
-        metric = ingredientData['metric']
-    else:
-        metric = "gram"
-
     # create object if extracted ingredient data are valid
-    if isIngredientDataValid(kcal, carbs, protein, fat, metric, ingredientName):
-        ingredientObject = ingredient(name, int(kcal), int(carbs), int(protein), int(fat), metric)
+    if isIngredientDataValid(kcal, carbs, protein, fat, ingredientName):
+        ingredientObject = ingredient(name, int(kcal), int(carbs), int(protein), int(fat))
 
     return ingredientObject
 
@@ -169,7 +163,7 @@ def getIngredientObject(ingredientObjectList, ingredientName):
     
     return requestedObject
 
-def isIngredientDataValid(kcal, carbs, protein, fat, metric, ingredientName):
+def isIngredientDataValid(kcal, carbs, protein, fat, ingredientName):
     """
     Performs semantical check on the given ingredient data and return wether the data are valid.
     """

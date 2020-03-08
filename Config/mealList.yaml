@@ -41,7 +41,7 @@ Grüner shake:
    
 # Ofen vorheizen	
 lowcarb brot:
-    Lowcarb Mehl:	150
+    Lowcarb Mehl: 150
     Magerquark: 500
     Kermix: 150
     Mandeln: 100
@@ -59,9 +59,9 @@ Quinoa salat:
     Apfel: 1
     Mandeln: 50 
     Granatapfel: 0.5 
-    Granatapfelsaft:	80 
+    Granatapfelsaft: 80 
     Joghurt: 100
-    Rotweinessig:	1
+    Rotweinessig: 1
 
 Waffeln herzhaft:
    Zwiebeln: 1
@@ -81,17 +81,17 @@ Waffeln herzhaft:
 
 # Süßen mit vanille flavour drops
 Waffeln süß lowcarb:
-    Eier:	6
-    Milch:	400
-    Lowcarb Mehl:	10
-    Backpulver:	1 
+    Eier: 6
+    Milch: 400
+    Lowcarb Mehl: 10
+    Backpulver: 1 
     Proteinpulver: 2
     options:
       - Erdbeeren: 200
       - Blaubeeren: 200
 
 Muffins herzhaft lowcarb:
-    Eier:	7
+    Eier: 7
     options:
         - - Ruccola: 50
           - Basilikum: 50

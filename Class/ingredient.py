@@ -23,13 +23,12 @@ def registerIngredientLogger(Logger):
 # -------------------------------------------------------------------------------------------------
 
 class ingredient:
-    def __init__(self, name, kcal, carb, protein, fat, metric, amount = 0):
+    def __init__(self, name, kcal, carb, protein, fat, amount = 0):
         self.name = name
         self.kcal = kcal
         self.carb = carb
         self.protein = protein
         self.fat = fat
-        self.metric = metric
         self.amount = amount
 
     def __repr__(self):
@@ -41,6 +40,5 @@ class ingredient:
         ingredientDescriptionString += " name: " + str(self.name) + ",\n"
         ingredientDescriptionString += " macros (K|C|P|F): " + str(self.kcal) + " " + \
                                    str(self.carb) + " " + str(self.protein) + " " + \
-                                   str(self.fat) + ",\n"
-        ingredientDescriptionString += " metric: " + str(self.metric) + "> \n\n"
+                                   str(self.fat) + "> \n\n"
         return ingredientDescriptionString

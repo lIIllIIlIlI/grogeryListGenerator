@@ -69,13 +69,15 @@ class meal:
 
     def resolveMacros(self):
         for ingredient in self.ingredientList:
-            if ingredient.metric == "gram":
+            # if more than 10 units of the ingredient are requested, its assumed to
+            # be "gram". Else, itt assumed to be number of elements. 
+            if self.ingredientList[ingredient] > 10:
                 self.kcal += ingredient.kcal * ingredient.amount / 100
                 self.carb += ingredient.carb * ingredient.amount / 100
                 self.protein += ingredient.protein * ingredient.amount / 100
                 self.fat += ingredient.fat * ingredient.fat / 100
 
-            elif ingredient.metric == "unit":
+            else:
                 self.kcal += ingredient.kcal * ingredient.amount 
                 self.carb += ingredient.carb * ingredient.amount 
                 self.protein += ingredient.protein * ingredient.amount
