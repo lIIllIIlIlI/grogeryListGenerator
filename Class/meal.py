@@ -71,7 +71,7 @@ class meal:
         for ingredient in self.ingredientList:
             # if more than 10 units of the ingredient are requested, its assumed to
             # be "gram". Else, itt assumed to be number of elements. 
-            if self.ingredientList[ingredient] > 10:
+            if ingredient.amount > 10:
                 self.kcal += ingredient.kcal * ingredient.amount / 100
                 self.carb += ingredient.carb * ingredient.amount / 100
                 self.protein += ingredient.protein * ingredient.amount / 100

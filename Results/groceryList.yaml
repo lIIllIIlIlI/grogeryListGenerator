@@ -1,46 +1,55 @@
 'choosen meals:':
 - shake
 - shake
-- exampleMeal2
-- exampleMeal1
-- exampleMeal1
-- exampleMeal2
-- exampleMeal2
-- exampleMeal1
-- exampleMeal2
-- exampleMeal1
-- exampleMeal1
-- exampleMeal2
-- exampleMeal2
-- exampleMeal1
-- exampleMeal1
-- exampleMeal2
-- exampleMeal2
-- exampleMeal1
-- exampleMeal2
-- exampleMeal1
-- exampleMeal1
-- exampleMeal2
-- exampleMeal1
-- exampleMeal2
+- lowcarb brot
+- Muffins herzhaft lowcarb
+- Himbeerquark
+- Quinoa salat
+- "Muffins sue\xC3\u0178 lowcarb"
+- Gruener shake
+- "Waffeln sue\xC3\u0178 lowcarb"
+- Quinoa salat
 - Reishuehnchen
 - Reishuehnchen
 'grocery list:':
+  Antipasti: 100
+  Apfel: 3
+  Avocado: 1
+  Backpulver: 1
   Banannen: 4
-  Bratfett: 220
-  Butter: 220
+  Blaubeeren: 200
+  Chiasamen: 150
+  Eier: 28
+  Erdbeeren: 200
+  Feldsalat: 200
+  Granatapfel: 1.0
   Haenchen: 400
-  Kaese: 110
-  Lauch: 110
-  Milch: 400
-  Nudeln: 4400
+  Himbeeren: 250
+  Joghurt: 200
+  Kernmix: 150
+  Lowcarb Mehl: 150
+  Mandeln: 150
+  Milch: 600
+  Milch mager: 100
+  Pilze: 3
+  Proteinpulver: 3
+  Quark mager: 1500
+  Quinoa: 120
   Reis: 200
-  Thymian: 22
-  Wacholder: 22
-  kartoffeln: 4400
+  Rotweinessig: 2
+  Ruccola: 100
+  Sahne halbfett: 250
+  Schinken: 100
+  Tomaten: 6
 'watch list:':
-- Limetten
-- lemonenSaft
+- Ingwer
+- Xucker
+- Butter
+- Basilikum
+- Zitronensaft
+- "S\xC3\xBC\xC3\u0178stoff"
 - Proteinpulver
-- Pfeffer
-- Salz
+- Matchapulver
+- Minze
+- Sprudelwasser
+- Limetten

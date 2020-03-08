@@ -378,7 +378,7 @@ def chooseMeals(mealList):
         choosenMealList = improveChoosenMealList(mealList, choosenMealList)
 
     if mealsDuplicated:
-        logger.error("Not enough meals specified to meet the given amounts of days and kcal without repetition")
+        logger.warning("Not enough meals specified to meet the given amounts of days and kcal without repetition")
 
     # add pre workout meals
     for i in range(args.workout):

@@ -52,7 +52,7 @@ Quark fett:
   protein: 9
   kcal: 139
   
-Milch light:
+Milch mager:
   carbs: 4.9
   fat: 1.5
   protein: 3.4
@@ -147,18 +147,24 @@ Proteinpulver:
   fat: 1.9
   protein: 21
   kcal: 103
-  
-Sprudelwasser:
-  carbs: 0
-  fat: 0
-  protein: 0
-  kcal: 0
    
 Kernmix:
   carbs: 16
   fat: 43
   protein: 27
   kcal: 541 
+  
+Eier:
+  carbs: 0.8
+  fat: 5.1
+  protein: 6.5
+  kcal: 75  
+  
+Tomaten:
+  carbs: 2.6
+  fat: 0.2
+  protein: 1
+  kcal: 18 
   
 Mandeln:
   carbs: 4.5
@@ -241,8 +247,8 @@ Speck:
   
 Lachs:
   carbs: 0
-  fat: 13,6
-  protein: 19,9
+  fat: 13.6
+  protein: 19.9
   kcal: 202
   
 Zitronensaft:

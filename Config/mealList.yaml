@@ -7,8 +7,8 @@
 # Zitronen über alle kippen
 
 Himbeerquark:
-  Quark light: 750
-  Milch light: 100
+  Quark mager: 750
+  Milch mager: 100
   Sahne halbfett: 250
   Himbeeren: 250
   Chiasamen: 50
@@ -17,7 +17,7 @@ Himbeerquark:
   - Süßstoff
 
 # Bemerkung: mehr Zitronensaft wagen
-Grüner shake:
+Gruener shake:
   options:
   - - Ruccola: 50
     - Spinat frisch: 50 
@@ -29,8 +29,7 @@ Grüner shake:
     - Avocado: 1
   Proteinpulver: 1
   Chiasamen: 30
-  Quark light: 250
-  Sprudelwasser: 100
+  Quark mager: 250
   watchList:
    - Zitronensaft
    - Ingwer 
@@ -38,15 +37,16 @@ Grüner shake:
    - Matchapulver 
    - Basilikum
    - Minze
+   - Sprudelwasser
    
 # Ofen vorheizen	
 lowcarb brot:
     Lowcarb Mehl: 150
-    Magerquark: 500
-    Kermix: 150
+    Quark mager: 500
+    Kernmix: 150
     Mandeln: 100
     Eier: 3
-    Chia Samen: 50
+    Chiasamen: 50
     Schinken: 100
     Antipasti: 100
     watchList:
@@ -59,9 +59,10 @@ Quinoa salat:
     Apfel: 1
     Mandeln: 50 
     Granatapfel: 0.5 
-    Granatapfelsaft: 80 
     Joghurt: 100
     Rotweinessig: 1
+    watchList:
+    - Zitronensaft
 
 Waffeln herzhaft:
    Zwiebeln: 1
@@ -74,21 +75,21 @@ Waffeln herzhaft:
    Frühlingszwiebeln: 100
    Creme Fraiche light: 200
    options:
-   - Speck: 100
-   - Lachs: 100
+       - - Speck: 100
+           Lachs: 100
    watchList:
    - Zitronensaft
 
 # Süßen mit vanille flavour drops
-Waffeln süß lowcarb:
+Waffeln sueß lowcarb:
     Eier: 6
     Milch: 400
     Lowcarb Mehl: 10
     Backpulver: 1 
     Proteinpulver: 2
     options:
-      - Erdbeeren: 200
-      - Blaubeeren: 200
+      - - Erdbeeren: 200
+        - Blaubeeren: 200
 
 Muffins herzhaft lowcarb:
     Eier: 7
@@ -99,13 +100,13 @@ Muffins herzhaft lowcarb:
           - Pilze: 3
 
 # Süßen mit vanille flavour drops
-Muffins süß lowcarb:
+Muffins sueß lowcarb:
     Eier: 7
     Proteinpulver: 1
     Lowcarb Mehl: 50
     options:
-        - Erdbeeren: 100
-        - Blaubeeren: 100
+        - - Erdbeeren: 100
+          - Blaubeeren: 100
 
 
 

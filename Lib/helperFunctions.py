@@ -1,6 +1,7 @@
 import logging
 import sys
 import random
+import yaml
 
 from pathlib import Path
 
@@ -65,11 +66,11 @@ def convertMealToObject(mealName, mealData, IngredientObjectList):
 
     # catch and handle options
     if "options" in mealData:
-        options = convertOptionsToIngredientList(mealData['options'],IngredientObjectList)  
-        if options == []:
-            logger.error("Meal {} could not be resolved because given options could not be resolved. Please adapt the yaml config".format(mealName))
-
-        mealData.update(options)
+        for option in mealData['options']:
+            options = convertOptionsToIngredientList(option,IngredientObjectList)  
+            if options == []:
+                logger.error("Meal {} could not be resolved because given options could not be resolved. Please adapt the yaml config".format(mealName))
+            mealData.update(options)
         del mealData['options']
     else:
         options = None
@@ -102,7 +103,7 @@ def convertMealToObject(mealName, mealData, IngredientObjectList):
             ingredientObject.amount = mealData[ingredient]
             ingredientList.append(ingredientObject)
         else:
-            logger.warning("Meal {} could not be resolved because ingredient {} in not be found in the ingredient list.".format(mealName, ingredientObject.name))
+            logger.warning("Meal {} could not be resolved because ingredient {} in not be found in the ingredient list.".format(mealName, ingredient))
             resolveStatus = False
 
     if resolveStatus:
@@ -228,7 +229,11 @@ def convertOptionsToIngredientList(optionsDict, IngredientObjectList):
     ]
     """
     resolvedOption = []
-    option = getRandomOption(optionsDict)
+    if len(optionsDict) < 2:
+        option = optionsDict
+        logger.warning("At least on meal has only one choice in the option field")
+    else:
+        option = getRandomOption(optionsDict)
     for optionIngredient in option:
         optionIngredientObject = getIngredientObject(IngredientObjectList, optionIngredient)
         if optionIngredientObject:
