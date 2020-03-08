@@ -39,10 +39,9 @@ def registerMealLogger(Logger):
 # -------------------------------------------------------------------------------------------------
 
 class meal:
-    def __init__(self, name, watchList, options, postWorkout, preWorkout, ingredientList = []):
+    def __init__(self, name, watchList, postWorkout, preWorkout, ingredientList = []):
         self.name = name
         self.watchList = watchList
-        self.options = options
         self.ingredientList = ingredientList
         self.postWorkout = postWorkout
         self.preWorkout = preWorkout

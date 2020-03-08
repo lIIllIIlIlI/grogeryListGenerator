@@ -22,6 +22,12 @@ Reis:
   protein: 6.8
   kcal: 349
 
+Mehl:
+  carbs: 72.3 
+  fat: 1
+  protein: 10
+  kcal: 348  
+
 Zwiebeln:
   carbs: 4.9 
   fat: 0.2
@@ -227,7 +233,7 @@ Backpulver:
   protein: 0.8
   kcal: 28
   
-Frühlingszwiebeln:
+Fruehlingszwiebeln:
   carbs: 3.0
   fat: 0.5
   protein: 2.0

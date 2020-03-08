@@ -14,7 +14,7 @@ Himbeerquark:
   Chiasamen: 50
   watchList:
   - Xucker
-  - Süßstoff
+  - Suessstoff
 
 # Bemerkung: mehr Zitronensaft wagen
 Gruener shake:
@@ -33,7 +33,7 @@ Gruener shake:
   watchList:
    - Zitronensaft
    - Ingwer 
-   - Süßstoff
+   - Suessstoff
    - Matchapulver 
    - Basilikum
    - Minze
@@ -72,16 +72,16 @@ Waffeln herzhaft:
    Mehl: 200
    Backpulver: 1
    Tomaten: 3
-   Frühlingszwiebeln: 100
+   Fruehlingszwiebeln: 100
    Creme Fraiche light: 200
    options:
        - - Speck: 100
-           Lachs: 100
+         - Lachs: 100
    watchList:
    - Zitronensaft
 
 # Süßen mit vanille flavour drops
-Waffeln sueß lowcarb:
+Waffeln suess lowcarb:
     Eier: 6
     Milch: 400
     Lowcarb Mehl: 10
@@ -100,7 +100,7 @@ Muffins herzhaft lowcarb:
           - Pilze: 3
 
 # Süßen mit vanille flavour drops
-Muffins sueß lowcarb:
+Muffins suess lowcarb:
     Eier: 7
     Proteinpulver: 1
     Lowcarb Mehl: 50

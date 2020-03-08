@@ -48,14 +48,18 @@ def convertMealToObject(mealName, mealData, IngredientObjectList):
         ingredient2: amount,
         ingredient3: amount,
         ingredient4: amount
-        options: {
-                    item1: amount,
-                    item2: amount
-                },
-                {
-                    item3: amount,
-                    item4: amount
-                } (optional)
+        options: 
+                [
+                    [
+                        item1: amount,
+                        item2: amount
+                    ],
+                    [
+                        item3: amount,
+                        item4: amount
+                    ],
+                    ...
+                ] (optional)
         watchList: [item1, item2, item3] (optional)
 
     output: object class meal
@@ -66,14 +70,14 @@ def convertMealToObject(mealName, mealData, IngredientObjectList):
 
     # catch and handle options
     if "options" in mealData:
+        # every option is resolved individually
         for option in mealData['options']:
-            options = convertOptionsToIngredientList(option,IngredientObjectList)  
-            if options == []:
+            choosenIngredients = convertOptionToIngredientList(option, IngredientObjectList)  
+            if choosenIngredients == []:
                 logger.error("Meal {} could not be resolved because given options could not be resolved. Please adapt the yaml config".format(mealName))
-            mealData.update(options)
+                sys.exit(1)
+            ingredientList.extend(choosenIngredients)
         del mealData['options']
-    else:
-        options = None
 
     # catch and handle watchList
     if "watchList" in mealData:
@@ -107,7 +111,7 @@ def convertMealToObject(mealName, mealData, IngredientObjectList):
             resolveStatus = False
 
     if resolveStatus:
-        mealObject = meal(mealName, watchList, options, postWorkout, preWorkout, ingredientList)
+        mealObject = meal(mealName, watchList, postWorkout, preWorkout, ingredientList)
 
     return mealObject
 
@@ -205,44 +209,47 @@ def is_number(s):
     except ValueError:
         return False
 
-def convertOptionsToIngredientList(optionsDict, IngredientObjectList):
+def convertOptionToIngredientList(optionsList, IngredientObjectList):
     """
     Converts a dictionary of ingredient options into a list of list of ingredient objects
 
     Input:
-    optionsDict = {
-        {
-            ingredientName1: amount,
-            ingredientNam2: amount,
-            ...
-        },
-        {
-            ingredientName1: amount,
-            ...
-        },
-        ...
+        optionsList: 
+                [
+                    [
+                        item1: amount,
+                        item2: amount
+                    ],
+                    [
+                        item3: amount,
+                        item4: amount
+                    ],
+                    ...
+                ] (optional)
     }
 
     output:
-    optionsDict = [
-        [ingredient1, ingredient2, ..], [ingredient1, ...]
-    ]
+        optionsDict = {
+            item1: amount
+            item2: amount,
+            ...
+        }
     """
     resolvedOption = []
-    if len(optionsDict) < 2:
-        option = optionsDict
+    if len(optionsList) < 2:
+        option = optionsList
         logger.warning("At least on meal has only one choice in the option field")
     else:
-        option = getRandomOption(optionsDict)
+        option = getRandomOption(optionsList)
     for optionIngredient in option:
         optionIngredientObject = getIngredientObject(IngredientObjectList, optionIngredient)
         if optionIngredientObject:
             optionIngredientObject.amount = option[optionIngredient]
             resolvedOption.append(optionIngredientObject)
         else:
-            option = []
+            resolvedOption = []
             break
-    return option
+    return resolvedOption
 
 def tagWorkoutMeals(postWorkoutMealDict, preWorkoutMealDict):
     """
