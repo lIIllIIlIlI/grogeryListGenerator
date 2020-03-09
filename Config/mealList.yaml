@@ -4,7 +4,14 @@
 # Haweitoast aus dem sandwich maker
 # Tomate Mozarella Salat
 # Sonstiges:
-# Zitronen über alle kippen
+# Zitronen über alles kippen
+
+Tomate Mozarella salat:
+  Mozarella: 1
+  Tomaten: 100
+  Olivenoel: 2
+  watchList:
+  - Essig
 
 Himbeerquark:
   Quark mager: 750
