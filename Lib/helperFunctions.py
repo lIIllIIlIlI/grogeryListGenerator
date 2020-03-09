@@ -70,6 +70,13 @@ def convertMealToObject(mealName, mealData, IngredientObjectList):
 
     # catch and handle options
     if "options" in mealData:
+    
+        # TODO: [REFACTORING] mealData is a dictionary with "key": "amount" pairs. After removing the special keys, the rest
+        #       of the key value pairs is converted to object. Therefore, this part should append the choosen option(s) to
+        #       mealData and let the routine resolve it later on. Unfortunately, it currently already creates objects and adds
+        #       them to the final object list. That makes the object flow hard to understand. Extending the functionality 
+        #       was even hard for me as the original author of the code.
+        
         # every option is resolved individually
         for option in mealData['options']:
             choosenIngredients = convertOptionToIngredientList(option, IngredientObjectList)  
@@ -86,6 +93,13 @@ def convertMealToObject(mealName, mealData, IngredientObjectList):
     else:
         watchList = ""
 
+    if "optional" in mealData:
+        coinFlip = random.randint(0,1)
+        if(coinFlip):
+            for key, value in enumerate(mealData["optional"]:
+                mealData[key] = value
+        del mealData['optional']
+        
     # catch and handle pre workout tag
     if "postWorkout" in mealData:
         postWorkout = True        
