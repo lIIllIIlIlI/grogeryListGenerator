@@ -1,10 +1,40 @@
 # Pokebowl
 # Risotto
-# Salat (einfacher als bisher)
+# Haehnchen Pfanne
+# Steak mit gemüse
+# Wraps
+# 
 # Haweitoast aus dem sandwich maker
-# Tomate Mozarella Salat
 # Sonstiges:
 # Zitronen über alles kippen
+
+Salat:
+  Tomaten: 150
+  Nussmix: 50
+  Olivenoel: 4
+  options:
+  - - Granatapfel: 100
+      Feldsalat: 200
+      Quinoa: 100
+      Joghurt: 150
+      Mozarella: 2
+      Apfel: 1
+    - Haenchenbrust: 400
+      Reibekaese: 200
+      Moehren: 200
+      Orange: 1
+      Ruccola: 200
+    - Rindersteak: 400
+      Moehren: 200
+      Zwiebeln: 150
+      Pilze: 150
+      Orange: 1
+  optional:
+    - Aufbackbrot: 200
+    - Mais: 285
+    - Paprika
+  watchList:
+  - Limettensaft  
 
 Tomate Mozarella salat:
   Mozarella: 1
@@ -58,18 +88,6 @@ lowcarb brot:
     Antipasti: 100
     watchList:
     - Butter
-
-Quinoa salat:
-    Quinoa: 60 
-    Feldsalat: 100 
-    Tomaten: 100 
-    Apfel: 1
-    Mandeln: 50 
-    Granatapfel: 0.5 
-    Joghurt: 100
-    Rotweinessig: 1
-    watchList:
-    - Zitronensaft
 
 Waffeln herzhaft:
    Zwiebeln: 1
