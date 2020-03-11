@@ -299,3 +299,33 @@ Pilze:
   protein: 2.7
   kcal: 16
 
+# RESOLVE FROM HERE
+Haenchenbrust:
+  carbs: 0.0
+  fat: 2.0
+  protein: 23
+  kcal: 110
+  
+Rindersteak:
+  carbs: 0
+  fat: 4.5
+  protein: 22.4
+  kcal: 130
+  
+Moehren:
+  carbs: 4.8
+  fat: 0.2
+  protein: 1
+  kcal: 39
+
+Orange:
+  carbs: 20.6
+  fat: 0.5
+  protein: 2.5
+  kcal: 118
+  
+Paprika:
+  carbs: 6.4
+  fat: 0.8
+  protein: 2
+  kcal: 55
