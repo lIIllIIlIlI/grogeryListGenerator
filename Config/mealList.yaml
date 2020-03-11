@@ -32,7 +32,7 @@ Salat:
   optional:
     - Aufbackbrot: 200
     - Mais: 285
-    - Paprika
+    - Paprika: 1
   watchList:
   - Limettensaft  
 
