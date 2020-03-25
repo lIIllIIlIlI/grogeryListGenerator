@@ -1,37 +1,80 @@
-# Pokebowl
 # Risotto
-# Haehnchen Pfanne
-# Steak mit gemüse
-# Wraps
-# Haweitoast aus dem sandwich maker
-# Sonstiges:
-# Zitronen über alles kippen
+
+Lachs mit Nudeln:
+  Brokkoli: 500
+  Lachs: 500
+  Nudeln: 500
+  Sahne mager: 200
+  Sesam: 40
+  watchList:
+  - Sojasoße
+
+Haenchen mit Gemüse:
+  Brokkoli: 500
+  Reis: 200
+  Haehnchen: 800
+  watchList:
+  - Sojasoße
+
+Pokebowl:
+  Sojabohnen: 200
+  Haehnchen: 400
+  Gurke: 1
+  Sesam: 40
+  Reis: 100 
+
+Steak mit Gemuese:
+  Steak: 600
+  Paprika: 1
+  Tomaten: 150
+  Zwiebeln: 100
+  optional:
+  - Kartoffeln: 300
+  
+Wraps:
+  Mais: 285
+  Bohnen: 255
+  Hackfleisch: 800
+  Ruccola: 200
+  Reibekaese: 200
+  Avocado: 1
+  watchList:
+  - Limettensaft
 
 Salat:
   Tomaten: 150
-  Nussmix: 50
+  Nussmix: 30
   Olivenoel: 4
+  Ruccola: 200
   options:
-  - - Granatapfel: 100
-      Feldsalat: 200
-      Quinoa: 100
-      Joghurt: 150
-      Mozarella: 2
-      Apfel: 1
-    - Haenchenbrust: 400
+  - - Haehnchen: 400
       Reibekaese: 200
       Moehren: 200
       Orange: 1
-      Ruccola: 200
-    - Rindersteak: 400
-      Moehren: 200
-      Zwiebeln: 150
+    - Shrimps: 400
+      Eier: 3
       Pilze: 150
+      Orange: 1
+    - Lachs: 250
       Orange: 1
   optional:
     - Aufbackbrot: 200
     - Mais: 285
     - Paprika: 1
+  watchList:
+  - Limettensaft  
+
+Salat:
+  Tomaten: 150
+  Nussmix: 50
+  Olivenoel: 4
+  Granatapfel: 100
+  Feldsalat: 200
+  Joghurt: 150
+  Mozarella: 2
+  Eier: 2 
+  Nudeln: 250
+  Apfel: 1
   watchList:
   - Limettensaft  
 

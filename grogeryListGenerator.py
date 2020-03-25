@@ -382,6 +382,7 @@ def chooseMeals(mealList):
 
     # add pre workout meals
     for i in range(args.workout):
+        print(preWorkoutMealList)
         chooseMeal = random.choice(preWorkoutMealList)
         choosenMealList.append(chooseMeal)
 

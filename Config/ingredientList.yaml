@@ -1,8 +1,80 @@
+Reibekaese:
+  carbs: 2.4
+  fat: 16.0
+  protein: 27.3
+  kcal: 263  
+
+Hackfleisch:
+  carbs: 0.0
+  fat: 9.0
+  protein: 19 
+  kcal: 157
+
+Bohnen:
+  carbs: 33.2
+  fat: 2 
+  protein: 21.4
+  kcal: 270 
+
+Gurke:
+  carbs: 7.2
+  fat: 0.8
+  protein: 2.4
+  kcal: 48
+
+Brokkoli:
+  carbs: 2.0
+  fat: 0.2
+  protein: 2.8
+  kcal: 22 
+
+Steak:
+  carbs: 0
+  fat: 9.0
+  protein: 30.0
+  kcal: 201 
+
+Sesam:
+  carbs: 10.2
+  fat: 50.4
+  protein: 20.9 
+  kcal: 572.0
+
+Sojabohnen:
+  carbs: 11.05 
+  fat: 6.8
+  protein: 12.95
+  kcal:  147
+
 Mozarella:
-  carbs: 1
-  fat: 8.5
-  protein: 19
-  kcal: 196
+  carbs: 1.3
+  fat: 10.6
+  protein: 23.8
+  kcal: 196 
+
+Nudeln:
+  carbs: 70
+  fat: 1 
+  protein: 13
+  kcal: 348 
+
+Lachs:
+  carbs: 0
+  fat: 13.6
+  protein: 19.9
+  kcal: 202
+
+Nussmix:
+  carbs: 12 
+  fat: 57 
+  protein: 18 
+  kcal: 652 
+
+Shrimps:
+  carbs: 3.0
+  fat: 1.7
+  protein: 20.3
+  kcal: 106
 
 Olivenoel:
   carbs: 0
@@ -22,7 +94,7 @@ Milch:
   protein: 3.4
   kcal: 47
 
-Haenchen:
+Haehnchen:
   carbs: 0
   fat: 2
   protein: 23
@@ -262,12 +334,6 @@ Speck:
   fat: 63
   protein: 9.0
   kcal: 620
-  
-Lachs:
-  carbs: 0
-  fat: 13.6
-  protein: 19.9
-  kcal: 202
   
 Zitronensaft:
   carbs: 3.6

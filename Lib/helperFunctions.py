@@ -96,7 +96,7 @@ def convertMealToObject(mealName, mealData, IngredientObjectList):
     if "optional" in mealData:
         coinFlip = random.randint(0,1)
         if(coinFlip):
-            for key, value in enumerate(mealData["optional"]:
+            for key, value in enumerate(mealData["optional"]):
                 mealData[key] = value
         del mealData['optional']
         
@@ -163,11 +163,17 @@ def getValueFromDictionary(dictionary, dictionaryName, key):
     Gets value for given key from given dictionary.
     Returns None if key could not be found in dictionary.
     """
-    if key in dictionary:
-        value = dictionary[key]
-    else:
-        logger.warning('Ingredient {} contains no {} value and will be ignored'.format(dictionaryName, key))
-        value = None
+    try:
+        if key in dictionary:
+            value = dictionary[key]
+        else:
+            logger.warning('Ingredient {} contains no {} value and will be ignored'.format(dictionaryName, key))
+            value = None
+    except:
+        print(key)
+        print("\n\n")
+        print(dictionary)
+        print("\n\n")
     return value
 
 def getIngredientObject(ingredientObjectList, ingredientName):
